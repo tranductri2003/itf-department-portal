@@ -110,7 +110,7 @@
                     <p class="card-text mb-auto">Nội Dung</p>
                     <a href="#">Continue reading</a>
                 </div>
-                <img class="card-img-right flex-auto d-none d-md-block" src="media/asset/ronaldo.jpg" alt="Description of the image" width="250" height="200">
+                <img class="card-img-right flex-auto d-none d-md-block" src="media/post/default.jpg" alt="Description of the image" width="250" height="200">
             </div>
         </div>
     </div>

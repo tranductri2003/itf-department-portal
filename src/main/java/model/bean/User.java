@@ -5,17 +5,15 @@ public class User {
     private String fullName;
     private String phoneNumber;
     private String email;
-    private String avatar;
     private String role;
     private String address;
 
     // Constructor
-    public User(String id, String fullName, String phoneNumber, String email, String avatar, String role, String address) {
+    public User(String id, String fullName, String phoneNumber, String email, String role, String address) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.avatar = avatar;
         this.role = role;
         this.address = address;
     }
@@ -54,15 +52,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    // Getter and setter methods for avatar
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     // Getter and setter methods for role
