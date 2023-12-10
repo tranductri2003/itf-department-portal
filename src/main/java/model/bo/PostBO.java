@@ -42,4 +42,8 @@ public class PostBO {
 	public List<Post> searchPost(String searchString) throws ClassNotFoundException, SQLException {
 		return this.postDAO.searchPost(searchString);
 	}
+	
+	public List<Post> searchPostByCategory(int category) throws ClassNotFoundException, SQLException {
+		return this.postDAO.searchPostByCategory(category);
+	}
 }

@@ -136,4 +136,19 @@ public class PostDAO {
         Connector.closeConnection(conn, stmt);
         return posts;
 	}
+	
+	public List<Post> searchPostByCategory(int category) throws ClassNotFoundException, SQLException {
+		List<Post> posts = new ArrayList<>();
+        Connection conn = Connector.getConnection();
+        String sql = "SELECT * FROM post WHERE category LIKE ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, category);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+        	Post post = new Post(rs);
+        	posts.add(post);
+        }
+        Connector.closeConnection(conn, stmt);
+        return posts;
+	}
 }
