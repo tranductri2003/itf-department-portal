@@ -15,7 +15,7 @@ public class PostDAO {
 	public List<Post> getAllPost() throws SQLException, ClassNotFoundException {
         List<Post> posts = new ArrayList<>();
         Connection conn = Connector.getConnection();
-        String sql = "SELECT * FROM Post";
+        String sql = "SELECT * FROM Post ORDER BY id DESC";
         PreparedStatement stmt = conn.prepareStatement(sql);
 
         ResultSet rs = stmt.executeQuery();
@@ -40,7 +40,7 @@ public class PostDAO {
 	
 	public Post getPost(int id) throws SQLException, ClassNotFoundException {
 		Connection conn = Connector.getConnection();
-        String sql = "SELECT * FROM post WHERE id = ?";
+        String sql = "SELECT * FROM post WHERE id = ? ORDER BY id DESC";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
 
@@ -124,7 +124,7 @@ public class PostDAO {
 	public List<Post> searchPost(String searchString) throws ClassNotFoundException, SQLException {
 		List<Post> posts = new ArrayList<>();
         Connection conn = Connector.getConnection();
-        String sql = "SELECT * FROM post WHERE title LIKE ? OR content LIKE ?";
+        String sql = "SELECT * FROM post WHERE title LIKE ? OR content LIKE ? ORDER BY id DESC";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, "%" + searchString + "%");
         stmt.setString(2, "%" + searchString + "%");
@@ -140,7 +140,7 @@ public class PostDAO {
 	public List<Post> searchPostByCategory(int category) throws ClassNotFoundException, SQLException {
 		List<Post> posts = new ArrayList<>();
         Connection conn = Connector.getConnection();
-        String sql = "SELECT * FROM post WHERE category LIKE ?";
+        String sql = "SELECT * FROM post WHERE category LIKE ? ORDER BY id DESC";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, category);
         ResultSet rs = stmt.executeQuery();

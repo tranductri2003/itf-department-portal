@@ -54,14 +54,14 @@
         </div>
         <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
-                <a class="p-2 text-muted" href="#">HOME</a>
-                <a class="p-2 text-muted" href="#">GIỚI THIỆU</a>
-                <a class="p-2 text-muted" href="#">TUYỂN SINH</a>
-                <a class="p-2 text-muted" href="#">ĐÀO TẠO</a>
-                <a class="p-2 text-muted" href="#">NGHIÊN CỨU KHOA HỌC</a>
-                <a class="p-2 text-muted" href="#">HỢP TÁC</a>
-                <a class="p-2 text-muted" href="#">SINH VIÊN</a>
-                <a class="p-2 text-muted" href="#">CỰU SINH VIÊN</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewHome">HOME</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewIntroduction">GIỚI THIỆU</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewTuyenSinh">TUYỂN SINH</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewDaoTao">ĐÀO TẠO</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewNCKH">NGHIÊN CỨU KHOA HỌC</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewHopTac">HỢP TÁC</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewSinhVien">SINH VIÊN</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewCuuSinhVien">CỰU SINH VIÊN</a>
             </nav>
         </div>
     </header>

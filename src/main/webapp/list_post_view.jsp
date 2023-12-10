@@ -1,3 +1,6 @@
+<%@ page import="model.bean.Post" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -21,7 +24,9 @@
 </head>
 
 <body>
-
+<%
+    List<Post> listPost = (List<Post>) request.getAttribute("listPost");
+%>
 <div class="container">
     <header class="blog-header py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
@@ -34,18 +39,20 @@
                 <a class="blog-header-logo text-dark" href="#">KHOA CÔNG NGHỆ THÔNG TIN</a>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search...">
-                    <div class="input-group-append">
-                        <a class="text-muted" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3">
-                                <circle cx="10.5" cy="10.5" r="7.5"></circle>
-                                <line x1="21" y1="21" x2="15.8" y2="15.8"></line>
-                            </svg>
-                        </a>
+                <form method="post" action="PostManagementServlet?action=search" class="my-2 my-lg-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..." name="searchValue">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-2">
+                                    <circle cx="10.5" cy="10.5" r="7.5"></circle>
+                                    <line x1="21" y1="21" x2="15.8" y2="15.8"></line>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
                 <span style="width: 10px;"></span> <!-- Khoảng cách giữa Search field và Sign In -->
                 <a class="btn btn-sm btn-outline-secondary" href="#">Sign In</a>
                 <span style="width: 10px;"></span> <!-- Khoảng cách giữa Sign In và Sign Up -->
@@ -54,14 +61,14 @@
         </div>
         <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
-                <a class="p-2 text-muted" href="#">HOME</a>
-                <a class="p-2 text-muted" href="#">GIỚI THIỆU</a>
-                <a class="p-2 text-muted" href="#">TUYỂN SINH</a>
-                <a class="p-2 text-muted" href="#">ĐÀO TẠO</a>
-                <a class="p-2 text-muted" href="#">NGHIÊN CỨU KHOA HỌC</a>
-                <a class="p-2 text-muted" href="#">HỢP TÁC</a>
-                <a class="p-2 text-muted" href="#">SINH VIÊN</a>
-                <a class="p-2 text-muted" href="#">CỰU SINH VIÊN</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewHome">HOME</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewIntroduction">GIỚI THIỆU</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewTuyenSinh">TUYỂN SINH</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewDaoTao">ĐÀO TẠO</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewNCKH">NGHIÊN CỨU KHOA HỌC</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewHopTac">HỢP TÁC</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewSinhVien">SINH VIÊN</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewCuuSinhVien">CỰU SINH VIÊN</a>
             </nav>
         </div>
         <hr class="border-bottom">
@@ -72,46 +79,51 @@
         <div class="row">
             <div class="col-md-6">
                 <!-- Hình ở đây -->
-                <img src="media/asset/ronaldo.jpg" alt="Description of the image" class="img-fluid rounded">
+                <% if (!listPost.isEmpty()) { %>
+                <img src="<%= listPost.get(0).getImage() %>" alt="Description of the image" class="img-fluid rounded">
+                <% } %>
             </div>
             <div class="col-md-6">
                 <!-- Nội dung văn bản ở đây -->
-                <h1 class="display-4 font-italic">Tiêu đề bài viết nhiều view nhất</h1>
-                <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
-                <p class="lead my-3">Exceprt bài viết nhiều view nhất</p>
+                <% if (!listPost.isEmpty()) { %>
+                <h1 class="display-4 font-italic"><%= listPost.get(0).getTitle() %></h1>
+                <p class="blog-post-meta">Ngày giờ by <a href="#"><%= listPost.get(0).getAuthor() %></a></p>
+                <p class="lead my-3"><%= listPost.get(0).getExcerpt() %></p>
                 <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+                <% } %>
             </div>
         </div>
     </div>
 
     <div class="row mb-2">
-        <div class="col-md-6">
-            <div class="card flex-md-row mb-4 box-shadow h-md-250">
-                <div class="card-body d-flex flex-column align-items-start">
-                    <strong class="d-inline-block mb-2 text-primary">Title category</strong>
-                    <h3 class="mb-0">
-                        <a class="text-dark" href="#">Tiêu đề Bài viết nhiều view</a>
-                    </h3>
-                    <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
-                    <p class="card-text mb-auto">Nội Dung</p>
-                    <a href="#">Continue reading</a>
+        <div class="row mb-2">
+            <% for (int i = 1; i < Math.min(listPost.size(), 3); i++) { %>
+            <div class="col-md-6">
+                <div class="card flex-md-row mb-4 box-shadow h-md-250">
+                    <div class="card-body d-flex flex-column align-items-start">
+                        <strong class="d-inline-block mb-2 text-primary">Title category</strong>
+                        <h3 class="mb-0">
+                            <a class="text-dark" href="#"><%= listPost.get(i).getTitle() %></a>
+                        </h3>
+                        <p class="blog-post-meta">Ngày giờ by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
+                        <%
+                            String excerpt = listPost.get(i).getExcerpt();
+                            int maxWords = 10;
+
+                            // Kiểm tra xem có đủ từ không
+                            if (excerpt.split("\\s+").length > maxWords) {
+                                // Cắt chuỗi văn bản và giữ lại chỉ số từ 1 đến 200
+                                String[] words = excerpt.split("\\s+");
+                                excerpt = String.join(" ", Arrays.copyOfRange(words, 0, maxWords));
+                                excerpt += "..."; // Thêm dấu chấm cuối cùng để chỉ ra là có thêm phần tiếp theo
+                            }
+                        %>
+                        <p class="card-text mb-auto"><%= excerpt %></p>                        <a href="#">Continue reading</a>
+                    </div>
+                    <img class="card-img-right flex-auto d-none d-md-block" src="<%= listPost.get(i).getImage() %>" alt="Description of the image" width="250" height="200">
                 </div>
-                <img class="card-img-right flex-auto d-none d-md-block" src="media/asset/ronaldo.jpg" alt="Description of the image" width="250" height="200">
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card flex-md-row mb-4 box-shadow h-md-250">
-                <div class="card-body d-flex flex-column align-items-start">
-                    <strong class="d-inline-block mb-2 text-success">Title category</strong>
-                    <h3 class="mb-0">
-                        <a class="text-dark" href="#">Tiêu đề Bài viết nhiều view</a>
-                    </h3>
-                    <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
-                    <p class="card-text mb-auto">Nội Dung</p>
-                    <a href="#">Continue reading</a>
-                </div>
-                <img class="card-img-right flex-auto d-none d-md-block" src="media/post/default.jpg" alt="Description of the image" width="250" height="200">
-            </div>
+            <% } %>
         </div>
     </div>
 </div>
@@ -123,43 +135,23 @@
                 Các bài viết khác
             </h3>
 
+            <% for (int i = 3; i < listPost.size(); i++) { %>
             <div class="blog-post">
-                <h2 class="blog-post-title">Các bài viết ít view hơn</h2>
+                <h2 class="blog-post-title"><%= listPost.get(i).getTitle() %></h2>
                 <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
 
-                <p>Exceprt các bài viết</p>
+                <p><%= listPost.get(i).getExcerpt() %></p>
                 <hr>
                 <p>Nội dung các bài viết</p>
                 <a href="#">Continue reading</a>
             </div><!-- /.blog-post -->
-
-            <div class="blog-post">
-                <h2 class="blog-post-title">Các bài viết ít view hơn</h2>
-                <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
-
-                <p>Exceprt các bài viết</p>
-                <hr>
-                <p>Nội dung các bài viết</p>
-                <a href="#">Continue reading</a>
-            </div><!-- /.blog-post -->
-
-            <div class="blog-post">
-                <h2 class="blog-post-title">Các bài viết ít view hơn</h2>
-                <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
-
-                <p>Exceprt các bài viết</p>
-                <hr>
-                <p>Nội dung các bài viết</p>
-                <a href="#">Continue reading</a>
-            </div><!-- /.blog-post -->
-
-
+            <% } %>
 
             <nav class="blog-pagination">
                 <a class="btn btn-outline-primary" href="#">Về đầu trang</a>
             </nav>
-
-        </div><!-- /.blog-main -->
+        </div>
+<!-- /.blog-main -->
 
         <aside class="col-md-4 blog-sidebar">
             <div class="p-3 mb-3 bg-light rounded">
@@ -175,14 +167,14 @@
             <div class="p-3">
                 <h4 class="font-italic">Mục lục</h4>
                 <ol class="list-unstyled mb-0">
-                    <li><a href="#">HOME</a></li>
-                    <li><a href="#">GIỚI THIỆU</a></li>
-                    <li><a href="#">TUYỂN SINH</a></li>
-                    <li><a href="#">ĐÀO TẠO</a></li>
-                    <li><a href="#">NGHIÊN CỨU KHOA HỌC</a></li>
-                    <li><a href="#">HỢP TÁC</a></li>
-                    <li><a href="#">SINH VIÊN</a></li>
-                    <li><a href="#">CỰU SINH VIÊN</a></li>
+                    <li><a href="PostManagementServlet?action=viewHome">HOME</a></li>
+                    <li><a href="PostManagementServlet?action=viewIntroduction">GIỚI THIỆU</a></li>
+                    <li><a href="PostManagementServlet?action=viewTuyenSinh">TUYỂN SINH</a></li>
+                    <li><a href="PostManagementServlet?action=viewDaoTao">ĐÀO TẠO</a></li>
+                    <li><a href="PostManagementServlet?action=viewNCKH">NGHIÊN CỨU KHOA HỌC</a></li>
+                    <li><a href="PostManagementServlet?action=viewHopTac">HỢP TÁC</a></li>
+                    <li><a href="PostManagementServlet?action=viewSinhVien">SINH VIÊN</a></li>
+                    <li><a href="PostManagementServlet?action=viewCuuSinhVien">CỰU SINH VIÊN</a></li>
                 </ol>
             </div>
 
