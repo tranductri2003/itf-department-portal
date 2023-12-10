@@ -17,7 +17,7 @@
 
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-    <link href="home-page.css" rel="stylesheet">
+    <link href="list-post.css" rel="stylesheet">
 </head>
 
 <body>
@@ -69,10 +69,18 @@
 
 
     <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
-        <div class="col-md-6 px-0">
-            <h1 class="display-4 font-italic">Tiêu đề bài viết nhiều view nhất</h1>
-            <p class="lead my-3">Exceprt bài viết nhiều view nhất</p>
-            <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Hình ở đây -->
+                <img src="media/asset/ronaldo.jpg" alt="Description of the image" class="img-fluid rounded">
+            </div>
+            <div class="col-md-6">
+                <!-- Nội dung văn bản ở đây -->
+                <h1 class="display-4 font-italic">Tiêu đề bài viết nhiều view nhất</h1>
+                <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
+                <p class="lead my-3">Exceprt bài viết nhiều view nhất</p>
+                <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+            </div>
         </div>
     </div>
 
@@ -84,7 +92,7 @@
                     <h3 class="mb-0">
                         <a class="text-dark" href="#">Tiêu đề Bài viết nhiều view</a>
                     </h3>
-                    <div class="mb-1 text-muted">Ngày</div>
+                    <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
                     <p class="card-text mb-auto">Nội Dung</p>
                     <a href="#">Continue reading</a>
                 </div>
@@ -98,12 +106,11 @@
                     <h3 class="mb-0">
                         <a class="text-dark" href="#">Tiêu đề Bài viết nhiều view</a>
                     </h3>
-                    <div class="mb-1 text-muted">Ngày</div>
+                    <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
                     <p class="card-text mb-auto">Nội Dung</p>
                     <a href="#">Continue reading</a>
                 </div>
-                <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb"
-                     alt="Card image cap">
+                <img class="card-img-right flex-auto d-none d-md-block" src="media/asset/ronaldo.jpg" alt="Description of the image" width="250" height="200">
             </div>
         </div>
     </div>
@@ -120,54 +127,30 @@
                 <h2 class="blog-post-title">Các bài viết ít view hơn</h2>
                 <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
 
-                <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic
-                    typography, images, and code are all supported.</p>
+                <p>Exceprt các bài viết</p>
                 <hr>
-                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus.
-                    Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est
-                    at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu
-                        leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </blockquote>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum.
-                    Aenean lacinia bibendum nulla sed consectetur.</p>
+                <p>Nội dung các bài viết</p>
+                <a href="#">Continue reading</a>
             </div><!-- /.blog-post -->
 
             <div class="blog-post">
                 <h2 class="blog-post-title">Các bài viết ít view hơn</h2>
                 <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
 
-                <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic
-                    typography, images, and code are all supported.</p>
+                <p>Exceprt các bài viết</p>
                 <hr>
-                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus.
-                    Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est
-                    at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu
-                        leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </blockquote>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum.
-                    Aenean lacinia bibendum nulla sed consectetur.</p>
+                <p>Nội dung các bài viết</p>
+                <a href="#">Continue reading</a>
             </div><!-- /.blog-post -->
 
             <div class="blog-post">
                 <h2 class="blog-post-title">Các bài viết ít view hơn</h2>
                 <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
 
-                <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic
-                    typography, images, and code are all supported.</p>
+                <p>Exceprt các bài viết</p>
                 <hr>
-                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus.
-                    Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est
-                    at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu
-                        leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </blockquote>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum.
-                    Aenean lacinia bibendum nulla sed consectetur.</p>
+                <p>Nội dung các bài viết</p>
+                <a href="#">Continue reading</a>
             </div><!-- /.blog-post -->
 
 
