@@ -4,7 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+
+
+    <link rel="icon" href="media/asset/logo.ico">
+
+    <title>ITF-Department-Portal</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="list-post.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">
     <link href="login.css" rel="stylesheet">
@@ -41,8 +52,20 @@
                 <a class="btn btn-sm btn-outline-secondary" href="#">Sign Up</a>
             </div>
         </div>
-        <hr class="border-bottom">
+        <div class="nav-scroller py-1 mb-2">
+            <nav class="nav d-flex justify-content-between">
+                <a class="p-2 text-muted" href="#">HOME</a>
+                <a class="p-2 text-muted" href="#">GIỚI THIỆU</a>
+                <a class="p-2 text-muted" href="#">TUYỂN SINH</a>
+                <a class="p-2 text-muted" href="#">ĐÀO TẠO</a>
+                <a class="p-2 text-muted" href="#">NGHIÊN CỨU KHOA HỌC</a>
+                <a class="p-2 text-muted" href="#">HỢP TÁC</a>
+                <a class="p-2 text-muted" href="#">SINH VIÊN</a>
+                <a class="p-2 text-muted" href="#">CỰU SINH VIÊN</a>
+            </nav>
+        </div>
     </header>
+
 </div>
 <section class="vh-100">
 	  <div class="container-fluid h-custom">
@@ -84,13 +107,11 @@
 	    </div>
 	  </div>
 </section>
-<div
-    class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-2 px-2 px-xl-5" style="background-color: gray; border: 1px solid gray;">
-    <!-- Copyright -->
-    <div class="text-white mb-3 mb-md-0">
-      Copyright © 2023. All rights reserved.
+<footer class="blog-footer">
+    <div class="mt-5">
+        <p class="copyright">© 2023 Bản quyền Trường Đại học Bách khoa - Đại học Đà Nẵng</p>
     </div>
-    <!-- Copyright -->
-</div>
+    </p>
+</footer>
 </body>
 </html>
