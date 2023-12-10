@@ -1,5 +1,8 @@
 package model.bean;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class User {
     private String id;
     private String fullName;
@@ -16,6 +19,15 @@ public class User {
         this.email = email;
         this.role = role;
         this.address = address;
+    }
+    
+    public User(ResultSet rs) throws SQLException {
+    	this.id = rs.getString("id");
+        this.fullName = rs.getString("full_name");
+        this.phoneNumber = rs.getString("phone_number");
+        this.email = rs.getString("email");
+        this.role = rs.getString("role");
+        this.address = rs.getString("address");
     }
 
     // Getter and setter methods for id

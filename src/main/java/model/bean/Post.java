@@ -1,5 +1,7 @@
 package model.bean;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Post {
@@ -24,6 +26,18 @@ public class Post {
         this.author = author;
         this.date = date;
         this.numViews = numViews;
+    }
+    
+    public Post(ResultSet rs) throws SQLException {
+    	this.id = rs.getInt("id");
+    	this.category = rs.getInt("category");
+        this.title = rs.getString("title");
+        this.image = rs.getString("image");
+        this.excerpt = rs.getString("excerpt");
+        this.content = rs.getString("content");
+        this.author = rs.getString("author");
+        this.date = rs.getDate("date");
+        this.numViews = rs.getInt("num_views");
     }
 
     // Getter and setter methods for id
