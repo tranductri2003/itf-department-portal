@@ -98,10 +98,12 @@
                 <!-- Nội dung văn bản ở đây -->
                 <% if (!listPost.isEmpty()) { %>
                 <h1 class="display-4 font-italic"><%= listPost.get(0).getTitle() %></h1>
-                <p class="blog-post-meta">Ngày giờ by <a href="#"><%= listPost.get(0).getAuthor() %></a></p>
+                <p class="blog-post-meta"><%=listPost.get(0).getNumViews()%> Lượt xem
+                <p class="blog-post-meta"><%=listPost.get(0).getDate()%> by <a href="#"><%= listPost.get(0).getAuthor() %></a></p>
                 <p class="lead my-3"><%= listPost.get(0).getExcerpt() %></p>
-                <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
-                <% } %>
+                <a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(0).getId() %>" class="text-white font-weight-bold">
+                    Continue reading...
+                </a>                <% } %>
             </div>
         </div>
     </div>
@@ -110,13 +112,14 @@
         <div class="row mb-2">
             <% for (int i = 1; i < Math.min(listPost.size(), 3); i++) { %>
             <div class="col-md-6">
-                <div class="card flex-md-row mb-4 box-shadow h-md-250">
+                <div class="card flex-md-row mb-4 box-shadow h-md-450">
                     <div class="card-body d-flex flex-column align-items-start">
-                        <strong class="d-inline-block mb-2 text-primary">Title category</strong>
+                        <strong class="d-inline-block mb-2 text-primary">Lastest Post</strong>
                         <h3 class="mb-0">
                             <a class="text-dark" href="#"><%= listPost.get(i).getTitle() %></a>
                         </h3>
-                        <p class="blog-post-meta">Ngày giờ by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
+                        <p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
+                        <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
                         <%
                             String excerpt = listPost.get(i).getExcerpt();
                             int maxWords = 10;
@@ -129,7 +132,8 @@
                                 excerpt += "..."; // Thêm dấu chấm cuối cùng để chỉ ra là có thêm phần tiếp theo
                             }
                         %>
-                        <p class="card-text mb-auto"><%= excerpt %></p>                        <a href="#">Continue reading</a>
+                        <p class="card-text mb-auto"><%= excerpt %></p>
+                        <a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(i).getId() %>">Continue reading</a>
                     </div>
                     <img class="card-img-right flex-auto d-none d-md-block" src="<%= listPost.get(i).getImage() %>" alt="Description of the image" width="250" height="200">
                 </div>
@@ -149,12 +153,13 @@
             <% for (int i = 3; i < listPost.size(); i++) { %>
             <div class="blog-post">
                 <h2 class="blog-post-title"><%= listPost.get(i).getTitle() %></h2>
-                <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
+                <p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
+                <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
 
                 <p><%= listPost.get(i).getExcerpt() %></p>
                 <hr>
                 <p>Nội dung các bài viết</p>
-                <a href="#">Continue reading</a>
+                <a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(i).getId() %>">Continue reading</a>
             </div><!-- /.blog-post -->
             <% } %>
 
