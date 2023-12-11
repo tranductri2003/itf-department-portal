@@ -95,13 +95,14 @@ public class PostDAO {
         stmt.setString(2, title);
         stmt.setString(3, image);
         stmt.setString(4, excerpt);
-        stmt.setString(6, content);
-        stmt.setString(7, author);
-        stmt.setDate(8, new java.sql.Date(date.getTime()));
-        stmt.setInt(9, numViews);
+        stmt.setString(5, content);
+        stmt.setString(6, author);
+        stmt.setDate(7, new java.sql.Date(date.getTime()));
+        stmt.setInt(8, numViews);
+        stmt.setInt(9, id);
         
         int affectedRows = stmt.executeUpdate();
-        
+
         Connector.closeConnection(conn, stmt);
         
         return affectedRows > 0;

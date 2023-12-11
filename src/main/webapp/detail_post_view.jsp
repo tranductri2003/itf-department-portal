@@ -1,3 +1,4 @@
+<%@ page import="model.bean.Post" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -21,7 +22,9 @@
 </head>
 
 <body>
-
+<%
+    Post post = (Post) request.getAttribute("post");
+%>
 <div class="container">
     <header class="blog-header py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
@@ -72,20 +75,21 @@
         <div class="row">
             <div class="col-md-6">
                 <!-- Hình ở đây -->
-                <img src="media/asset/ronaldo.jpg" alt="Description of the image" class="img-fluid rounded">
+                <img src="<%=post.getImage()%>" alt="Description of the image" class="img-fluid rounded">
             </div>
             <div class="col-md-6">
                 <!-- Nội dung văn bản ở đây -->
-                <h1 class="display-4 font-italic">Tiêu đề bài viết nhiều view nhất</h1>
-                <p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
-                <p class="lead my-3">Exceprt bài viết nhiều view nhất</p>
+                <h1 class="display-4 font-italic"><%= post.getTitle()%></h1>
+                <p class="blog-post-meta"><%=post.getNumViews()%> Lượt xem
+                <p class="blog-post-meta"><%=post.getDate()%> by <a href="#"><%=post.getAuthor()%></a></p>
+                <p class="lead my-3"><%=post.getExcerpt()%></p>
             </div>
         </div>
     </div>
 </div>
 
 <main role="main" class="container">
-    <p>Nội dung các bài viết</p>
+    <p><%=post.getContent()%></p>
 </main><!-- /.container -->
 
 <footer class="blog-footer">
