@@ -18,6 +18,9 @@ public class PostBO {
 	public List<Post> getAllPost() throws ClassNotFoundException, SQLException {
 		return this.postDAO.getAllPost();
 	}
+	public List<Post> getUserPost(String id) throws ClassNotFoundException, SQLException {
+		return this.postDAO.getUserPost(id);
+	}
 	
 	public Post getPost(int id) throws ClassNotFoundException, SQLException {
 		Post post = this.postDAO.getPost(id);

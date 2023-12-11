@@ -37,6 +37,21 @@ public class PostDAO {
         Connector.closeConnection(conn, stmt);
         return posts;
     }
+	public List<Post> getUserPost(String userId) throws ClassNotFoundException, SQLException {
+	    List<Post> posts = new ArrayList<>();
+	    Connection conn = Connector.getConnection();
+	    String sql = "SELECT * FROM post WHERE author = ? ORDER BY id DESC"; // Giả sử bạn có cột user_id trong bảng post
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, userId);
+
+	    ResultSet rs = stmt.executeQuery();
+	    while (rs.next()) {
+	        Post post = new Post(rs);
+	        posts.add(post);
+	    }
+	    Connector.closeConnection(conn, stmt);
+	    return posts;
+	}
 	
 	public Post getPost(int id) throws SQLException, ClassNotFoundException {
 		Connection conn = Connector.getConnection();

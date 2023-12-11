@@ -60,9 +60,9 @@
                 <span style="width: 10px;"></span>
                 
                 <% if (user != null) { %>
-			        <a class="btn btn-sm btn-outline-secondary" href="#"> <%= user.getFullName() %> </a>
+					<a class="btn btn-sm btn-outline-secondary" href="PostManagementServlet?action=viewUserPosts&userId=<%= user.getId() %>"> <%= user.getFullName() %> </a>
 			        <span style="width: 10px;"></span>
-			        <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign Out</a>
+			        <a class="btn btn-sm btn-outline-secondary" href="AuthenticationManagementServlet?action=logout" method="POST">Sign Out</a>
 			    <% } else { %>
 			        <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign In</a>
 			        <span style="width: 10px;"></span>

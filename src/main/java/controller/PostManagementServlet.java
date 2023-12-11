@@ -11,11 +11,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-
+import model.bean.User;
 
 @WebServlet(name = "PostManagementServlet", value = "/PostManagementServlet")
 public class PostManagementServlet extends HttpServlet {
     private PostBO postBO;
+    private User user;
     public PostManagementServlet(){
         super();
         postBO = new PostBO();
@@ -151,6 +152,21 @@ public class PostManagementServlet extends HttpServlet {
                     request.setAttribute("listPost", listPost);
                     dispatcher = request.getRequestDispatcher("list_post_view.jsp");
                     dispatcher.forward(request, response);
+                    break;
+                    
+                case "viewUserPosts":
+                    	String userId = request.getParameter("userId");
+
+                        List<Post> userPosts;
+                        try {
+                            userPosts = postBO.getUserPost(userId);
+                        } catch (ClassNotFoundException | SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        request.setAttribute("listUserPost", userPosts);
+                        dispatcher = request.getRequestDispatcher("user_page_view.jsp");
+                        dispatcher.forward(request, response);
+                    
                     break;
             }
         }
