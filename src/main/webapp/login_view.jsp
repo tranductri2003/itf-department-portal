@@ -67,45 +67,50 @@
     </header>
 
 </div>
+<% if (request.getAttribute("errorMessage") != null) { %>
+<div class="alert alert-danger" role="alert">
+    <%= request.getAttribute("errorMessage") %>
+</div>
+<% } %>
 <section class="vh-100">
-	  <div class="container-fluid h-custom">
-	    <div class="row d-flex justify-content-center align-items-center h-100">
-	      <div class="col-md-9 col-lg-6 col-xl-5">
-	        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-	          class="img-fluid" alt="Sample image">
-	      </div>
-	      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1" >
-	        <form action="LoginServlet" method="POST">
-	
-	          <div class="d-flex flex-row mb-4">
-	           	  <i class="fas fa-user fa-lg me-2 fa-fw" style="padding:18px 30px 2.5px 2.5px"></i>
-		          <div class="form-outline flex-fill mb-0">
-		            <input type="email" id="username" class="form-control form-control-lg"
-		              placeholder="Nhập tài khoản" />
-		            <label class="form-label" for="username">Tài khoản</label>
-		          </div>
-			  </div>
-	          <!-- Password input -->
-	          <div class="d-flex flex-row mb-4">
-	           	  <i class="fas fa-lock fa-lg me-2 fa-fw" style="padding:18px 30px 2.5px 2.5px"></i>
-		          <div class="form-outline flex-fill mb-0">
-		            <input type="password" id="password" class="form-control form-control-lg"
-		              placeholder="Nhập mật khẩu" />
-		            <label class="form-label" for="password">Mật khẩu</label>
-		          </div>
-	          </div>
-	
-	          <div class="text-center text-lg-start mt-4 pt-2">
-	            <input type="submit" id="login" value="Đăng nhập" class="btn btn-primary btn-lg"
-	              style="padding-left: 2.5rem; padding-right: 2.5rem; background-color: gray; border: 1px solid gray;">
-	            <p class="small fw-bold mt-2 pt-1 mb-0">Bạn chưa có tài khoản? <a href="#!"
-	                class="link-danger">Đăng ký</a></p>
-	          </div>
-	
-	        </form>
-	      </div>
-	    </div>
-	  </div>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1" >
+                <form action="AuthenticationManagementServlet?action=login" method="POST">
+
+                    <div class="d-flex flex-row mb-4">
+                        <i class="fas fa-user fa-lg me-2 fa-fw" style="padding:18px 30px 2.5px 2.5px"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <input type="text" id="username" name="username" class="form-control form-control-lg"
+                                   placeholder="Nhập tài khoản" />
+                            <label class="form-label" for="username">Tài khoản</label>
+                        </div>
+                    </div>
+                    <!-- Password input -->
+                    <div class="d-flex flex-row mb-4">
+                        <i class="fas fa-lock fa-lg me-2 fa-fw" style="padding:18px 30px 2.5px 2.5px"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <input type="password" id="password" name="password"  class="form-control form-control-lg"
+                                   placeholder="Nhập mật khẩu" />
+                            <label class="form-label" for="password">Mật khẩu</label>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <input type="submit" id="login" value="Đăng nhập" class="btn btn-primary btn-lg"
+                               style="padding-left: 2.5rem; padding-right: 2.5rem; background-color: gray; border: 1px solid gray;">
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Bạn chưa có tài khoản? <a href="register_view.jsp"
+                                                                                          class="link-danger">Đăng ký</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
 <footer class="blog-footer">
     <div class="mt-5">
