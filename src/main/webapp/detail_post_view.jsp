@@ -1,4 +1,5 @@
 <%@ page import="model.bean.Post" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -23,6 +24,7 @@
 
 <body>
 <%
+    List<Post> listPost = (List<Post>) request.getAttribute("listPost");
     Post post = (Post) request.getAttribute("post");
 %>
 <div class="container">
@@ -90,6 +92,30 @@
 
 <main role="main" class="container">
     <p><%=post.getContent()%></p>
+    <div class="row">
+        <div class="col-md-8 blog-main">
+            <h3 class="pb-3 mb-4 font-italic border-bottom">
+                Các bài viết khác bạn có thể sẽ thích
+            </h3>
+
+            <% for (int i = 0; i < Math.min(listPost.size(), 10); i++) { %>
+            <div class="blog-post">
+                <h2 class="blog-post-title"><%= listPost.get(i).getTitle() %></h2>
+                <p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
+                <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
+
+                <p><%= listPost.get(i).getExcerpt() %></p>
+                <hr>
+                <p>Nội dung các bài viết</p>
+                <a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(i).getId() %>">Continue reading</a>
+            </div><!-- /.blog-post -->
+            <% } %>
+
+            <nav class="blog-pagination">
+                <a class="btn btn-outline-primary" href="#">Về đầu trang</a>
+            </nav>
+        </div>
+    </div><!-- /.row -->
 </main><!-- /.container -->
 
 <footer class="blog-footer">
