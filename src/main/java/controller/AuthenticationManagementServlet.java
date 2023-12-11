@@ -15,7 +15,15 @@ public class AuthenticationManagementServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    	String action = request.getParameter("action");
+        if (action != null && action.equals("logout")) {
+            HttpSession session = request.getSession(false); // Lấy session hiện tại
+            if (session != null) {
+                session.removeAttribute("user"); // Xóa thông tin người dùng khỏi session
+                session.invalidate(); // Hủy session
+            }
+            response.sendRedirect("login_view.jsp");
+        }
     }
 
     @Override
@@ -45,6 +53,13 @@ public class AuthenticationManagementServlet extends HttpServlet {
             } catch (ClassNotFoundException | SQLException e) {
                 throw new ServletException("Database error", e);
             }
+        }else if(action != null && action.equals("logout")) {
+        	HttpSession session = request.getSession(false); // Lấy session hiện tại
+            if (session != null) {
+                session.removeAttribute("user"); // Xóa thông tin người dùng khỏi session
+                session.invalidate(); // Hủy session
+            }
+            response.sendRedirect("login_view.jsp");
         }else if(action != null && action.equals("register")) {
             String username = request.getParameter("username");
             String password = request.getParameter("password");

@@ -12,12 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< HEAD
 import java.util.*;
 
+=======
+import model.bean.User;
+>>>>>>> d83695d7cb6bc03ab33988387de583db125063be
 
 @WebServlet(name = "PostManagementServlet", value = "/PostManagementServlet")
 public class PostManagementServlet extends HttpServlet {
     private PostBO postBO;
+    private User user;
     public PostManagementServlet(){
         super();
         postBO = new PostBO();
@@ -141,6 +146,21 @@ public class PostManagementServlet extends HttpServlet {
                     dispatcher = request.getRequestDispatcher("list_post_view.jsp");
                     dispatcher.forward(request, response);
                     break;
+
+                    
+                case "viewUserPosts":
+                    	String userId = request.getParameter("userId");
+
+                        List<Post> userPosts;
+                        try {
+                            userPosts = postBO.getUserPost(userId);
+                        } catch (ClassNotFoundException | SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        request.setAttribute("listUserPost", userPosts);
+                        dispatcher = request.getRequestDispatcher("user_page_view.jsp");
+                        dispatcher.forward(request, response);
+                    
 
                 case "detailPost":
                     int postId = Integer.parseInt(request.getParameter("id"));
