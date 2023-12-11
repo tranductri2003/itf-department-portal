@@ -35,7 +35,7 @@ public class AuthenticationManagementServlet extends HttpServlet {
                     session.setAttribute("user", user);
 
                     // Điều hướng đến trang chủ hoặc trang quản lý nếu cần
-                    response.sendRedirect("list_post_view.jsp"); // Thay đổi 'homePage.jsp' với trang bạn muốn chuyển đến
+                    response.sendRedirect("PostManagementServlet?action=viewHome"); // Thay đổi 'homePage.jsp' với trang bạn muốn chuyển đến
                 } else {
                     // Đăng nhập thất bại, hiển thị thông báo hoặc chuyển đến trang đăng nhập lại
                     request.setAttribute("errorMessage", "Tài khoản hoặc mật khẩu không đúng");

@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="model.bean.User" %>
 
 <!doctype html>
 <html lang="en">
@@ -38,6 +39,9 @@
                 <br>
                 <a class="blog-header-logo text-dark" href="#">KHOA CÔNG NGHỆ THÔNG TIN</a>
             </div>
+            <%
+    			User user = (User) session.getAttribute("user");
+			%>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <form method="post" action="PostManagementServlet?action=search" class="my-2 my-lg-0">
                     <div class="input-group">
@@ -53,10 +57,17 @@
                         </div>
                     </div>
                 </form>
-                <span style="width: 10px;"></span> <!-- Khoảng cách giữa Search field và Sign In -->
-                <a class="btn btn-sm btn-outline-secondary" href="#">Sign In</a>
-                <span style="width: 10px;"></span> <!-- Khoảng cách giữa Sign In và Sign Up -->
-                <a class="btn btn-sm btn-outline-secondary" href="#">Sign Up</a>
+                <span style="width: 10px;"></span>
+                
+                <% if (user != null) { %>
+			        <a class="btn btn-sm btn-outline-secondary" href="#"> <%= user.getFullName() %> </a>
+			        <span style="width: 10px;"></span>
+			        <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign Out</a>
+			    <% } else { %>
+			        <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign In</a>
+			        <span style="width: 10px;"></span>
+			        <a class="btn btn-sm btn-outline-secondary" href="register_view.jsp">Sign Up</a>
+			    <% } %>
             </div>
         </div>
         <div class="nav-scroller py-1 mb-2">
