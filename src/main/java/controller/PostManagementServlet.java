@@ -12,12 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-<<<<<<< HEAD
 import java.util.*;
 
-=======
 import model.bean.User;
->>>>>>> d83695d7cb6bc03ab33988387de583db125063be
 
 @WebServlet(name = "PostManagementServlet", value = "/PostManagementServlet")
 public class PostManagementServlet extends HttpServlet {
