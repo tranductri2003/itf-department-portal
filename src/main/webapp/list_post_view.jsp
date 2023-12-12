@@ -99,7 +99,7 @@
                 <% if (!listPost.isEmpty()) { %>
                 <h1 class="display-4 font-italic"><%= listPost.get(0).getTitle() %></h1>
                 <p class="blog-post-meta"><%=listPost.get(0).getNumViews()%> Lượt xem
-                <p class="blog-post-meta"><%=listPost.get(0).getDate()%> by <a href="#"><%= listPost.get(0).getAuthor() %></a></p>
+                <p class="blog-post-meta"><%=listPost.get(0).getDate()%> by <a href="PostManagementServlet?action=viewUserPosts&userId=<%= listPost.get(0).getAuthor() %>"><%= listPost.get(0).getAuthor() %></a></p>
                 <p class="lead my-3"><%= listPost.get(0).getExcerpt() %></p>
                 <a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(0).getId() %>" class="text-white font-weight-bold">
                     Continue reading...
@@ -119,7 +119,7 @@
                             <a class="text-dark" href="#"><%= listPost.get(i).getTitle() %></a>
                         </h3>
                         <p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
-                        <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
+                        <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="PostManagementServlet?action=viewUserPosts&userId=<%=listPost.get(i).getAuthor()%>"><%= listPost.get(i).getAuthor() %></a></p>
                         <%
                             String excerpt = listPost.get(i).getExcerpt();
                             int maxWords = 10;
@@ -154,7 +154,7 @@
             <div class="blog-post">
                 <h2 class="blog-post-title"><%= listPost.get(i).getTitle() %></h2>
                 <p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
-                <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
+                <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="PostManagementServlet?action=viewUserPosts&userId=<%=listPost.get(i).getAuthor()%>"><%= listPost.get(i).getAuthor() %></a></p>
 
                 <p><%= listPost.get(i).getExcerpt() %></p>
                 <hr>

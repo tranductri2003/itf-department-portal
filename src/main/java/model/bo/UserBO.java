@@ -23,6 +23,7 @@ public class UserBO {
 	}
 
 	public User getUser(String id) throws ClassNotFoundException, SQLException {
+		System.out.println("userdao: "+id);
 		return this.userDAO.getUser(id);
 	}
 

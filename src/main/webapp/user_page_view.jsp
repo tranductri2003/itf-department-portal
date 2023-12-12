@@ -7,9 +7,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="media/asset/logo.ico">
+
+    <title>ITF-Department-Portal</title>
 	<link href="user_page_view.css" rel="stylesheet">
+	<link href="list_post_view.css" rel="stylesheet">
     <link href="bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -22,8 +28,67 @@
 </head>
 <body>
 <div class="container">
+    <header class="blog-header py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+            <div class="col-2">
+                <img src="media/asset/logo.jpg" alt="Logo" width="100" height="100" margin-right="0px">
+            </div>
+            <div class="col-6 text-center">
+                <a class="blog-header-logo text-dark" href="#">TRƯỜNG ĐẠI HỌC BÁCH KHOA</a>
+                <br>
+                <a class="blog-header-logo text-dark" href="#">KHOA CÔNG NGHỆ THÔNG TIN</a>
+            </div>
+            <%
+    			User user = (User) session.getAttribute("user");
+			%>
+            <div class="col-4 d-flex justify-content-end align-items-center">
+                <form method="post" action="PostManagementServlet?action=search" class="my-2 my-lg-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..." name="searchValue">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-2">
+                                    <circle cx="10.5" cy="10.5" r="7.5"></circle>
+                                    <line x1="21" y1="21" x2="15.8" y2="15.8"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <span style="width: 10px;"></span>
+                
+                <% if (user != null) { %>
+					<a class="btn btn-sm btn-outline-secondary" href="PostManagementServlet?action=viewUserPosts&userId=<%= user.getId() %>"> <%= user.getFullName() %> </a>
+			        <span style="width: 10px;"></span>
+			        <a class="btn btn-sm btn-outline-secondary" href="AuthenticationManagementServlet?action=logout" method="POST">Sign Out</a>
+			    <% } else { %>
+			        <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign In</a>
+			        <span style="width: 10px;"></span>
+			        <a class="btn btn-sm btn-outline-secondary" href="register_view.jsp">Sign Up</a>
+			    <% } %>
+            </div>
+        </div>
+        <div class="nav-scroller py-1 mb-2">
+            <nav class="nav d-flex justify-content-between">
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewHome">HOME</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewIntroduction">GIỚI THIỆU</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewTuyenSinh">TUYỂN SINH</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewDaoTao">ĐÀO TẠO</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewNCKH">NGHIÊN CỨU KHOA HỌC</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewHopTac">HỢP TÁC</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewSinhVien">SINH VIÊN</a>
+                <a class="p-2 text-muted" href="PostManagementServlet?action=viewCuuSinhVien">CỰU SINH VIÊN</a>
+            </nav>
+        </div>
+        <hr class="border-bottom">
+    </header>
+</div>
+<div class="container">
 <div class="row gutters">
 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+
+
 <div class="card h-100">
 	<div class="card-body">
 		<div class="account-settings">
@@ -32,13 +97,13 @@
 					<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
 				</div>
 				<%
-			        User user = (User) session.getAttribute("user");
+			        User userProfile = (User) request.getAttribute("author");
 			        if (user != null) {
 			    %>
-			        <h4 class="user-name"><%= user.getFullName() %></h4>
-				    <h6 class="user-email">Gmail: <%= user.getEmail() %></h6>
-				    <h6 class="user-phoneNumber">SĐT: <%= user.getPhoneNumber() %></h6>
-				    <h6 class="user-address">Địa chỉ: <%= user.getAddress() %></h6>
+			        <h4 class="user-name"><%= userProfile.getFullName() %></h4>
+				    <h6 class="user-email">Gmail: <%= userProfile.getEmail() %></h6>
+				    <h6 class="user-phoneNumber">SĐT: <%= userProfile.getPhoneNumber() %></h6>
+				    <h6 class="user-address">Địa chỉ: <%= userProfile.getAddress() %></h6>
 			    <%
 			        }
 			    %>
@@ -115,10 +180,20 @@
 		</div>
 		<div class="row gutters">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-				<div class="text-right">
-					<button type="button" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
-					<button type="button" id="submit" name="submit" class="btn btn-primary">Update</button>
-				</div>
+				<% 
+				    User sessionUser = (User) session.getAttribute("user");
+				    User author = (User) request.getAttribute("author");
+				
+				    if (sessionUser != null && author != null && sessionUser.getId().equals(author.getId())) {
+				        // Hiển thị các nút button nếu ID của người dùng trong session và author giống nhau
+				%>
+				        <div class="text-right">
+				            <button type="button" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
+				            <button type="button" id="update" name="update" class="btn btn-primary">Update</button>
+				        </div>
+				<%
+				    }
+				%>
 			</div>
 		</div>
 	</div>

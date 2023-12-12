@@ -12,14 +12,17 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import model.bean.User;
-
+import model.bo.UserBO;
 @WebServlet(name = "PostManagementServlet", value = "/PostManagementServlet")
 public class PostManagementServlet extends HttpServlet {
     private PostBO postBO;
+    private UserBO userBO;
     private User user;
     public PostManagementServlet(){
         super();
         postBO = new PostBO();
+        userBO = new UserBO();
+
     }
 
     @Override
@@ -144,13 +147,16 @@ public class PostManagementServlet extends HttpServlet {
                     
                 case "viewUserPosts":
                     	String userId = request.getParameter("userId");
-
+                    	System.out.println("đây là author"+userId);
                         List<Post> userPosts;
                         try {
                             userPosts = postBO.getUserPost(userId);
+                            user = userBO.getUser(userId);
+                            System.out.println(user.getFullName());
                         } catch (ClassNotFoundException | SQLException e) {
                             throw new RuntimeException(e);
                         }
+                        request.setAttribute("author", user);
                         request.setAttribute("listUserPost", userPosts);
                         dispatcher = request.getRequestDispatcher("user_page_view.jsp");
                         dispatcher.forward(request, response);
