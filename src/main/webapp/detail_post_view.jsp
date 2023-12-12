@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <span style="width: 10px;"></span> <!-- Khoảng cách giữa Search field và Sign In -->
-                <a class="btn btn-sm btn-outline-secondary" href="#">Sign In</a>
+                <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign In</a>
                 <span style="width: 10px;"></span> <!-- Khoảng cách giữa Sign In và Sign Up -->
                 <a class="btn btn-sm btn-outline-secondary" href="#">Sign Up</a>
             </div>
