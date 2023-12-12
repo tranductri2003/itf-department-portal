@@ -8,9 +8,12 @@ import model.bo.PostBO;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.*;
+
 import model.bean.User;
 import model.bo.UserBO;
 @WebServlet(name = "PostManagementServlet", value = "/PostManagementServlet")
@@ -18,6 +21,17 @@ public class PostManagementServlet extends HttpServlet {
     private PostBO postBO;
     private UserBO userBO;
     private User user;
+
+    private static double[][] similarityMatrix = {
+            {1, 0.9, 0.8, 0.6, 0.7, 0.5, 0.5},
+            {0.9, 1, 0.9, 0.6, 0.7, 0.8, 0.7},
+            {0.8, 0.9, 1, 0.9, 0.7, 0.8, 0.7},
+            {0.6, 0.6, 0.9, 1, 0.7, 0.9, 0.7},
+            {0.7, 0.7, 0.7, 0.7, 1, 0.7, 0.8},
+            {0.5, 0.8, 0.8, 0.9, 0.7, 1, 0.8},
+            {0.5, 0.7, 0.7, 0.7, 0.8, 0.8, 1},
+    };
+
     public PostManagementServlet(){
         super();
         postBO = new PostBO();
@@ -160,19 +174,36 @@ public class PostManagementServlet extends HttpServlet {
                         request.setAttribute("listUserPost", userPosts);
                         dispatcher = request.getRequestDispatcher("user_page_view.jsp");
                         dispatcher.forward(request, response);
-                    
+
 
                 case "detailPost":
                     int postId = Integer.parseInt(request.getParameter("id"));
-                    Post post;
+                    Post currentPost;
                     try {
-                        post = postBO.getPost(postId);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                        currentPost = postBO.getPost(postId);
+                        listPost = postBO.getAllPost();
+                    } catch (ClassNotFoundException | SQLException e) {
+                        throw new RuntimeException("Error retrieving post information", e);
                     }
-                    request.setAttribute("post", post);
+
+                    System.out.println("Number of articles: " + listPost.size());
+
+                    List<Integer> similarPostsId = calculateSimilarity(currentPost, listPost);
+                    List<Post> similarPosts = new ArrayList<>();
+                    for (Integer id : similarPostsId) {
+                        try {
+                            Post similarPost = postBO.getPost(id);
+                            if (similarPost != null) {
+                                similarPosts.add(similarPost);
+                            }
+                        } catch (ClassNotFoundException | SQLException e) {
+                            throw new RuntimeException("Error retrieving similar post information", e);
+                        }
+                    }
+
+                    request.setAttribute("post", currentPost);
+                    request.setAttribute("listPost", similarPosts);
+
                     dispatcher = request.getRequestDispatcher("detail_post_view.jsp");
                     dispatcher.forward(request, response);
                     break;
@@ -180,28 +211,68 @@ public class PostManagementServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+    // Các phương thức khác giữ nguyên
 
-        if (action!=null && !action.isEmpty()) {
-            switch (action) {
-                case "search":
-                    String value = request.getParameter("searchValue");
+    private List<Integer> calculateSimilarity(Post currentPost, List<Post> listPost) {
+        Map<Integer, Double> similarityMap = new HashMap<>();
 
-                    List<Post> listPost;
-                    try {
-                        listPost = postBO.searchPost(value);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    request.setAttribute("listPost", listPost);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("list_post_view.jsp");
-                    dispatcher.forward(request, response);
-                    break;
+        for (Post post : listPost) {
+            if (post != currentPost) {
+                Double similarity = calculateCosineSimilarity(currentPost, post);
+                similarityMap.put(post.getId(), similarity);
             }
         }
+
+        // Sắp xếp map theo giảm dần của giá trị tương đồng
+        List<Map.Entry<Integer, Double>> sortedSimilarityList = new ArrayList<>(similarityMap.entrySet());
+        sortedSimilarityList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+        // Lấy danh sách id của các bài viết có độ tương đồng cao nhất
+        List<Integer> similarPosts = new ArrayList<>();
+        for (Map.Entry<Integer, Double> entry : sortedSimilarityList) {
+            similarPosts.add(entry.getKey());
+        }
+
+        return similarPosts;
     }
+
+
+    private static double calculateCosineSimilarity(Post post1, Post post2) {
+        int category1 = post1.getCategory();
+        int category2 = post2.getCategory();
+
+        String author1 = post1.getAuthor();
+        String author2 = post2.getAuthor();
+
+
+        // Use a constant to emphasize the importance of the same category or author
+        double categorySimilarity = similarityMatrix[category1-1][category2-1];
+        double authorSimilarity = author1.equals(author2) ? 1.0 : 0.5;
+
+        // Calculate cosine similarity
+        // Vector1 = [1, author]; vector2 = [category, 1]
+        double dotProduct = 1 * categorySimilarity + 1 * authorSimilarity;
+        double magnitude1 = Math.sqrt(1 + Math.pow(categorySimilarity, 2));
+        double magnitude2 = Math.sqrt(1 + Math.pow(authorSimilarity, 2));
+
+
+        if (magnitude1 == 0 || magnitude2 == 0) {
+            return 0.0;
+        }
+
+        double similarity = dotProduct / (magnitude1 * magnitude2);
+
+        // Print details of both posts and similarity metrics
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+        System.out.println("Post 1: " + post1.getId() + " " + post1.getTitle() + " " + post1.getCategory() + " " + post1.getAuthor());
+        System.out.println("Post 2: " + post2.getId() + " " + post2.getTitle() + " " + post2.getCategory() + " " + post2.getAuthor());
+        System.out.println("Cosine Similarity: " + similarity);
+        System.out.println("Author Similarity: " + authorSimilarity);
+        System.out.println("Category Similarity: " + categorySimilarity);
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+
+        return similarity;
+    }
+
+
 }
