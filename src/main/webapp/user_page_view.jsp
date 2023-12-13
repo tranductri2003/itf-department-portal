@@ -94,19 +94,29 @@
 <div class="container">
 	<div class="row gutters">
 		<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-
+			<% if (request.getAttribute("errorMessage") != null) { %>
+			<div class="alert alert-danger" role="alert">
+				<%= request.getAttribute("errorMessage") %>
+			</div>
+			<% } %>
+			<%
+				User userProfile = (User) request.getAttribute("author");
+				if (userProfile != null) {
+			%>
 
 			<div class="card h-100">
+
 				<div class="card-body">
 					<div class="account-settings">
 						<div class="user-profile">
+							<%
+								boolean isEditable = user != null && userProfile != null && user.getId().equals(userProfile.getId()) ;
+							%>
 							<div class="user-avatar">
 								<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
+
 							</div>
-							<%
-								User userProfile = (User) request.getAttribute("author");
-								if (user != null) {
-							%>
+
 							<h4 class="user-name"><%= userProfile.getFullName() %></h4>
 							<h6 class="user-email">Gmail: <%= userProfile.getEmail() %></h6>
 							<h6 class="user-phoneNumber">SĐT: <%= userProfile.getPhoneNumber() %></h6>
@@ -118,91 +128,84 @@
 						</div>
 						<div class="about">
 							<h5>About</h5>
-							<p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</p>
+							<p><%= userProfile.getAbout() %></p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+			<%
+				boolean isEditable = (user != null && userProfile != null && user.getId().equals(userProfile.getId())) || user.getRole().equals("AD") ;
+
+			%>
 			<div class="card h-100">
 				<div class="card-body">
-					<div class="row gutters">
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<h6 class="mb-2 text-primary">Personal Details</h6>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="fullName">Full Name</label>
-								<input type="text" class="form-control" id="fullName" placeholder="Enter full name">
-							</div>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="eMail">Email</label>
-								<input type="email" class="form-control" id="eMail" placeholder="Enter email ID">
-							</div>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="phone">Phone</label>
-								<input type="text" class="form-control" id="phone" placeholder="Enter phone number">
-							</div>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="website">Website URL</label>
-								<input type="url" class="form-control" id="website" placeholder="Website url">
-							</div>
-						</div>
-					</div>
-					<div class="row gutters">
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<h6 class="mt-3 mb-2 text-primary">Address</h6>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="Street">Street</label>
-								<input type="name" class="form-control" id="Street" placeholder="Enter Street">
-							</div>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="ciTy">City</label>
-								<input type="name" class="form-control" id="ciTy" placeholder="Enter City">
-							</div>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="sTate">State</label>
-								<input type="text" class="form-control" id="sTate" placeholder="Enter State">
-							</div>
-						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-							<div class="form-group">
-								<label for="zIp">Zip Code</label>
-								<input type="text" class="form-control" id="zIp" placeholder="Zip Code">
-							</div>
-						</div>
-					</div>
-					<div class="row gutters">
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-							<%
-								User sessionUser = (User) session.getAttribute("user");
-								User author = (User) request.getAttribute("author");
+					<form action="UserManagementServlet?action=update&userId=<%= userProfile.getId() %>" method="post">
+						<div class="row gutters">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-								if (sessionUser != null && author != null && sessionUser.getId().equals(author.getId())) {
-									// Hiển thị các nút button nếu ID của người dùng trong session và author giống nhau
-							%>
-							<div class="text-right">
-								<button type="button" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
-								<button type="button" id="update" name="update" class="btn btn-primary">Update</button>
+								<h6 class="mb-2 text-primary">Personal Details</h6>
 							</div>
-							<%
-								}
-							%>
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label for="fullName">Full Name</label>
+									<input type="text" class="form-control" id="fullName" name="fullName" placeholder="Họ và tên" value="<%= userProfile.getFullName() %>" <%= isEditable ? "" : "readonly" %> required>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label for="eMail">Email</label>
+									<input type="email" class="form-control" id="eMail" name="eMail" placeholder="Email" value="<%= userProfile.getEmail() %>" <%= isEditable ? "" : "readonly" %> required>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label for="phone">Phone</label>
+									<input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" value="<%= userProfile.getPhoneNumber() %>" <%= isEditable ? "" : "readonly" %> required>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label for="website">Address</label>
+									<input type="text" class="form-control" id="Address" name="Address" placeholder="Địa chỉ" value="<%= userProfile.getAddress() %>" <%= isEditable ? "" : "readonly" %> required>
+								</div>
+							</div>
 						</div>
-					</div>
+						<div class="row gutters">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+								<h6 class="mt-3 mb-2 text-primary">About Me</h6>
+								<textarea class="form-control" id="about" name="about" rows="3" <%= isEditable ? "" : "readonly" %> ><%= userProfile != null ? userProfile.getAbout() : "" %></textarea>
+								<% if (isEditable) { %>
+								<div class="form-group">
+									<h6 class="mt-3 mb-2 text-primary">Change Avatar</h6>
+									<input type="file" class="form-control-file" id="avatar" name="avatar">
+								</div>
+								<% } %>
+							</div>
+						</div>
+						<div class="row gutters">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+								<%
+									User sessionUser = (User) session.getAttribute("user");
+									User author = (User) request.getAttribute("author");
+
+									if (sessionUser != null && (
+											sessionUser.getId().equals(author.getId()) || // Kiểm tra ID giống nhau
+													sessionUser.getRole().equals("AD") // Kiểm tra role là 'AD'
+									)) {                                        // Hiển thị các nút button nếu ID của người dùng trong session và author giống nhau
+								%>
+								<div class="text-right">
+									<button type="button" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
+									<button type="submit" id="update" name="update" class="btn btn-primary" >Update</button>
+								</div>
+								<%
+									}
+								%>
+							</div>
+						</div>
+					</form>
+
 				</div>
 			</div>
 		</div>

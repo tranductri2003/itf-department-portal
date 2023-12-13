@@ -11,6 +11,7 @@ class Connector {
     private static String PASSWORD = "";
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
+
     	Connection conn = DriverManager.getConnection(DB_URL, USER_NAME, PASSWORD);
         return conn;
     }

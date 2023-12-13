@@ -10,6 +10,8 @@ public class User {
     private String email;
     private String role;
     private String address;
+    private String avatar;
+    private String about;
 
     // Constructor
     public User(String id, String fullName, String phoneNumber, String email, String role, String address) {
@@ -19,6 +21,8 @@ public class User {
         this.email = email;
         this.role = role;
         this.address = address;
+        this.avatar = avatar;
+        this.about = about;
     }
     
     public User(ResultSet rs) throws SQLException {
@@ -28,6 +32,8 @@ public class User {
         this.email = rs.getString("email");
         this.role = rs.getString("role");
         this.address = rs.getString("address");
+        this.avatar = rs.getString("avatar"); 
+        this.about = rs.getString("about");
     }
 
     // Getter and setter methods for id
@@ -82,5 +88,21 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    // Getter and setter for about
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 }

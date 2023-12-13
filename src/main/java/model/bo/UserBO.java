@@ -31,8 +31,8 @@ public class UserBO {
 		return this.userDAO.insertUser(id, fullName, phoneNumber, email, "GV", address);
 	}
 
-	public boolean updateUser(String id, String fullName, String phoneNumber, String email, String address) throws ClassNotFoundException, SQLException {
-		return this.userDAO.updateUser(id, fullName, phoneNumber, email, "GV", address);
+	public boolean updateUser(String id, String fullName, String phoneNumber, String email, String address, String about) throws ClassNotFoundException, SQLException {
+		return this.userDAO.updateUser(id, fullName, phoneNumber, email, "GV", address, about);
 	}
 
 	public boolean deleteUser(String id) throws ClassNotFoundException, SQLException {
