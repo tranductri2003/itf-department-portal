@@ -161,7 +161,6 @@ public class PostManagementServlet extends HttpServlet {
                     
                 case "viewUserPosts":
                     	String userId = request.getParameter("userId");
-                    	System.out.println("đây là author"+userId);
                         List<Post> userPosts;
                         try {
                             userPosts = postBO.getUserPost(userId);
@@ -206,6 +205,47 @@ public class PostManagementServlet extends HttpServlet {
 
                     dispatcher = request.getRequestDispatcher("detail_post_view.jsp");
                     dispatcher.forward(request, response);
+                    break;
+            }
+        }
+    }
+
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if (action!=null && !action.isEmpty()) {
+            switch (action) {
+                case "search":
+                    String value = request.getParameter("searchValue");
+                    List<Post> listPost;
+                    try {
+                        listPost = postBO.searchPost(value);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    request.setAttribute("listPost", listPost);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("list_post_view.jsp");
+                    dispatcher.forward(request, response);
+                    break;
+
+                case "delete":
+                    int idToDelete = Integer.parseInt(request.getParameter("delete"));
+                    String userIdToDelete = request.getParameter("userId");
+                    System.out.println(idToDelete);
+                    System.out.println(userIdToDelete);
+                    try {
+                        postBO.deletePost(idToDelete);
+                        System.out.println("Đã xóa thành công");
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    String redirectURL = "PostManagementServlet?action=viewUserPosts&userId=" + userIdToDelete;
+                    response.sendRedirect(redirectURL);
                     break;
             }
         }

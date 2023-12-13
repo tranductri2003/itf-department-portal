@@ -25,6 +25,13 @@
 	<link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
+	<style>
+		.form-container {
+			display: flex;
+			justify-content: flex-end; /* Aligns items to the start of the container */
+			align-items: center;    /* Centers items vertically */
+		}
+	</style>
 </head>
 <body>
 <div class="container">
@@ -201,24 +208,55 @@
 		</div>
 	</div>
 </div>
+
+
+
+<%-- POST --%>
+
+
+<% List<Post> listPost = (List<Post>) request.getAttribute("listUserPost"); %>
+
 <main role="main" class="container">
 	<div class="row">
 		<div class="col-md-8 blog-main">
 			<h3 class="pb-3 mb-4 font-italic border-bottom">
-				Các bài viết khác
+				Các bài viết khác của tác giả
 			</h3>
-			<%
-				List<Post> listPost = (List<Post>) request.getAttribute("listUserPost");
-			%>
+
 			<% for (int i = 3; i < listPost.size(); i++) { %>
 			<div class="blog-post">
 				<h2 class="blog-post-title"><%= listPost.get(i).getTitle() %></h2>
-				<p class="blog-post-meta">Ngày giờ by <a href="#">Tác giả</a></p>
+				<p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
+				<p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="PostManagementServlet?action=viewUserPosts&userId=<%=listPost.get(i).getAuthor()%>"><%= listPost.get(i).getAuthor() %></a></p>
 
 				<p><%= listPost.get(i).getExcerpt() %></p>
 				<hr>
 				<p>Nội dung các bài viết</p>
-				<a href="#">Continue reading</a>
+				<a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(i).getId() %>">Continue reading</a>
+
+				<!-- Kiểm tra điều kiện và hiển thị nút "Update" và "Delete" -->
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<%
+						if (sessionUser != null && (
+								sessionUser.getId().equals(author.getId()) || // Kiểm tra ID giống nhau
+										sessionUser.getRole().equals("AD") // Kiểm tra role là 'AD'
+						)) {
+					%>
+					<!-- Container cho các nút Update và Delete -->
+					<div class="form-container">
+						<form method="post" action="PostManagementServlet?action=updateForm&userId=<%= userProfile.getId()%>" style="margin-right: 10px;">
+							<button type="submit" id="update<%= i %>" name="update" value="<%= listPost.get(i).getId() %>" class="btn btn-primary">Update</button>
+						</form>
+						<form method="post" action="PostManagementServlet?action=delete&userId=<%= userProfile.getId()%>">
+							<button type="submit" id="delete<%= i %>" name="delete" value="<%= listPost.get(i).getId() %>" class="btn btn-danger">Delete</button>
+						</form>
+					</div>
+
+
+					<%
+						}
+					%>
+				</div>
 			</div><!-- /.blog-post -->
 			<% } %>
 
@@ -227,11 +265,9 @@
 			</nav>
 		</div>
 		<!-- /.blog-main -->
-
-
 	</div><!-- /.row -->
-
 </main><!-- /.container -->
+
 
 </body>
 </html>
