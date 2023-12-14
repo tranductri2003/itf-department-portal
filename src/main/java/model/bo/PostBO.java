@@ -30,8 +30,8 @@ public class PostBO {
 		return post;
 	}
 	
-	public boolean insertPost(int id, int category, String title, String image, String excerpt, String content, String author, Date date, int numViews) throws ClassNotFoundException, SQLException {
-		return this.postDAO.insertPost(id, category, title, image, excerpt, content, author, date, numViews);
+	public boolean insertPost(int category, String title, String image, String excerpt, String content, String author, int numViews) throws ClassNotFoundException, SQLException {
+		return this.postDAO.insertPost(category, title, image, excerpt, content, author, numViews);
 	}
 	
 	public boolean updatePost(int id, int category, String title, String image, String excerpt, String content, int numViews) throws ClassNotFoundException, SQLException {

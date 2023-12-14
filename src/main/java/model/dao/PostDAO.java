@@ -78,21 +78,23 @@ public class PostDAO {
         return post;
 	}
 	
-	public boolean insertPost(int id, int category, String title, String image, String excerpt, String content, String author, Date date, int numViews) throws ClassNotFoundException, SQLException {
+	public boolean insertPost(int category, String title, String image, String excerpt, String content, String author, int numViews) throws ClassNotFoundException, SQLException {
 		Connection conn = Connector.getConnection();
 		
-		String sql = "INSERT INTO post (id, category, title, image, excerpt, content, author, date, num_views) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO post (category, title, image, excerpt, content, author, date, num_views) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
-
-        stmt.setInt(1, id);
-        stmt.setInt(2, category);
-        stmt.setString(3, title);
-        stmt.setString(4, image);
-        stmt.setString(5, excerpt);
-        stmt.setString(6, content);
-        stmt.setString(7, author);
-        stmt.setDate(8, new java.sql.Date(date.getTime()));
-        stmt.setInt(9, numViews);
+        
+        Date date = new Date();
+        
+//        stmt.setInt(1, id);
+        stmt.setInt(1, category);
+        stmt.setString(2, title);
+        stmt.setString(3, image);
+        stmt.setString(4, excerpt);
+        stmt.setString(5, content);
+        stmt.setString(6, author);
+        stmt.setDate(7, new java.sql.Date(date.getTime()));
+        stmt.setInt(8, numViews);
 
         int affectedRows = stmt.executeUpdate();
 		

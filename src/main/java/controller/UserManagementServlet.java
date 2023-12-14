@@ -12,8 +12,8 @@ import model.bo.UserBO;
 
 @WebServlet(name = "UserManagementServlet", value = "/UserManagementServlet")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,   // 2MB
-maxFileSize = 1024 * 1024 * 10,        // 10MB
-maxRequestSize = 1024 * 1024 * 50)    // 50MB
+				 maxFileSize = 1024 * 1024 * 10,        // 10MB
+				 maxRequestSize = 1024 * 1024 * 50)    // 50MB
 public class UserManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,9 +69,6 @@ public class UserManagementServlet extends HttpServlet {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
-        	}
-        	else if (action.equals("updateForm")) {
-        		
         	}
 		            
 

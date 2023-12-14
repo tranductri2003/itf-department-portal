@@ -211,7 +211,9 @@
 							</div>
 						</div>
 					</form>
-
+					<form action="PostManagementServlet?action=insertForm" method="post">
+					<button type="submit" id="ỉnsert" name="ỉnsert" class="btn btn-primary" >Tạo bài đăng mới</button>
+					</form>
 				</div>
 			</div>
 		</div>

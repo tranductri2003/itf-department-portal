@@ -324,6 +324,71 @@ public class PostManagementServlet extends HttpServlet {
                     String redirURL = "PostManagementServlet?action=detailPost&id=" + id;
                     response.sendRedirect(redirURL);
                     break;
+                case "insertForm":
+                	String userIdToInsert= request.getParameter("userId");
+                    System.out.println(userIdToInsert);
+                    try {
+                        List<Category> categoryList = categoryBO.getAllCategory();
+                        request.setAttribute("categoryList", categoryList);
+                        dispatcher = request.getRequestDispatcher("insert_post_form.jsp");
+                        dispatcher.forward(request, response);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                	break;
+                case "insert":
+                	Part fPart = request.getPart("image"); // "image" is the name of the file input field in your HTML form
+                    String fName = extractFileName(fPart);
+                    // Define the relative path where you want to save the image
+                    String relPath = "media/post";  // Change this to your desired relative path
+                    
+                    int categoryInsert = Integer.parseInt(request.getParameter("category"));
+                    String imageInsert = null;
+                    if (fName != null && fName != "") {
+                    	imageInsert = relPath + "/" + fName;
+                    	System.out.println(imageInsert);
+                    	// Get the real path of the web application and concatenate the relative path
+                        ServletContext context = getServletContext();
+                        String uploadPath = context.getRealPath(relPath);
+
+                        File uploadDir = new File(uploadPath);
+                        System.out.print(uploadPath);
+                        if (!uploadDir.exists()) {
+                            uploadDir.mkdir();
+                        }
+                        fPart.write(uploadPath + File.separator + fName);
+                    }
+                    
+                    String titleInsert = request.getParameter("title");
+                    String excerptInsert = request.getParameter("excerpt");
+                    String contentInsert = request.getParameter("content");
+                    int numViewsInsert = 0;
+                    
+                    jakarta.servlet.http.HttpSession session = request.getSession();
+
+                    User user = (User) session.getAttribute("user");
+                    String author = user.getId();
+
+					try {
+						postBO.insertPost(categoryInsert, titleInsert, imageInsert, excerptInsert, contentInsert, author, numViewsInsert);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}   
+					request.setAttribute("userId", request.getParameter("userId"));
+					List<Post> posts = null;
+                    try {
+                        listPost = postBO.getAllPost();
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    request.setAttribute("listPost", posts);
+                    String redireURL = "PostManagementServlet?action=viewHome";
+                    response.sendRedirect(redireURL);
+                    break;
             }
         }
     }
