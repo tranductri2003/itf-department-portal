@@ -25,7 +25,7 @@ public class PostBO {
 	public Post getPost(int id) throws ClassNotFoundException, SQLException {
 		Post post = this.postDAO.getPost(id);
 		if (post != null) {
-			this.postDAO.updatePost(id, post.getCategory(), post.getTitle(), post.getImage(), post.getExcerpt(), post.getContent(), post.getAuthor(), post.getDate(), post.getNumViews() + 1);
+			this.postDAO.updatePost(id, post.getCategory(), post.getTitle(), post.getImage(), post.getExcerpt(), post.getContent(), post.getNumViews() + 1);
 		}
 		return post;
 	}
@@ -34,8 +34,8 @@ public class PostBO {
 		return this.postDAO.insertPost(id, category, title, image, excerpt, content, author, date, numViews);
 	}
 	
-	public boolean updatePost(int id, int category, String title, String image, String excerpt, String content, String author, Date date, int numViews) throws ClassNotFoundException, SQLException {
-		return this.postDAO.updatePost(id, category, title, image, excerpt, content, author, date, numViews);
+	public boolean updatePost(int id, int category, String title, String image, String excerpt, String content, int numViews) throws ClassNotFoundException, SQLException {
+		return this.postDAO.updatePost(id, category, title, image, excerpt, content, numViews);
 	}
 	
 	public boolean deletePost(int id) throws ClassNotFoundException, SQLException {

@@ -100,21 +100,23 @@ public class PostDAO {
 		return affectedRows > 0;
 	}
 	
-	public boolean updatePost(int id, int category, String title, String image, String excerpt, String content, String author, Date date, int numViews) throws ClassNotFoundException, SQLException {
+	public boolean updatePost(int id, int category, String title, String image, String excerpt, String content, int numViews) throws ClassNotFoundException, SQLException {
 		Connection conn = Connector.getConnection();
 	
-		String sql = "UPDATE post SET category = ?, title = ?, image = ?, excerpt = ?, content = ?, author = ?, date = ?, num_views = ? WHERE id = ?";
+		String sql = "UPDATE post SET category = ?, title = ?, image = ?, excerpt = ?, content = ?, num_views = ? WHERE id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
+		
+		if (image == null || image == "") {
+			image = this.getPost(id).getImage();
+		}
 		
 		stmt.setInt(1, category);
         stmt.setString(2, title);
         stmt.setString(3, image);
         stmt.setString(4, excerpt);
         stmt.setString(5, content);
-        stmt.setString(6, author);
-        stmt.setDate(7, new java.sql.Date(date.getTime()));
-        stmt.setInt(8, numViews);
-        stmt.setInt(9, id);
+        stmt.setInt(6, numViews);
+        stmt.setInt(7, id);
         
         int affectedRows = stmt.executeUpdate();
 

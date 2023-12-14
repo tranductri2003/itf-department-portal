@@ -113,13 +113,7 @@
 								boolean isEditable = user != null && userProfile != null && user.getId().equals(userProfile.getId()) ;
 							%>
 							<div class="user-avatar">
-								<% 
-									String img = userProfile.getAvatar(); 
-									if (img == null || img == "") {
-										img = "https://bootdey.com/img/Content/avatar/avatar7.png";
-									}
-								%>
-								<img src="<%=img %>" alt="Maxwell Admin">
+								<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
 
 							</div>
 
@@ -147,7 +141,7 @@
 			%>
 			<div class="card h-100">
 				<div class="card-body">
-					<form action="UserManagementServlet?action=update&userId=<%= userProfile.getId() %>" method="post" enctype="multipart/form-data">
+					<form action="UserManagementServlet?action=update&userId=<%= userProfile.getId() %>" method="post">
 						<div class="row gutters">
 							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
@@ -185,7 +179,7 @@
 								<% if (isEditable) { %>
 								<div class="form-group">
 									<h6 class="mt-3 mb-2 text-primary">Change Avatar</h6>
-									<input type="file" id="image" name="image" accept="image/*" class="form-control">
+									<input type="file" class="form-control-file" id="avatar" name="avatar">
 								</div>
 								<% } %>
 							</div>

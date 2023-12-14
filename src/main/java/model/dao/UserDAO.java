@@ -81,19 +81,24 @@ public class UserDAO {
         return affectedRows > 0;
     }
 
-    public boolean updateUser(String id, String fullName, String phoneNumber, String email, String role, String address, String about) throws ClassNotFoundException, SQLException {
+    public boolean updateUser(String id, String fullName, String phoneNumber, String email, String role, String address, String avatar, String about) throws ClassNotFoundException, SQLException {
         Connection conn = Connector.getConnection();
 
-        String sql = "UPDATE user SET full_name = ?, phone_number = ?, email = ?, role = ?, address = ?, about = ? WHERE id = ?";
+        String sql = "UPDATE user SET full_name = ?, phone_number = ?, email = ?, role = ?, address = ?, avatar = ?, about = ? WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
+        
+        if (avatar == null || avatar == "") {
+        	avatar = this.getUser(id).getAvatar();
+		}
 
         stmt.setString(1, fullName);
         stmt.setString(2, phoneNumber);
         stmt.setString(3, email);
         stmt.setString(4, role);
         stmt.setString(5, address);
-        stmt.setString(6, about); 
-        stmt.setString(7, id); 
+        stmt.setString(6, avatar);
+        stmt.setString(7, about); 
+        stmt.setString(8, id); 
 
 
         int affectedRows = stmt.executeUpdate();

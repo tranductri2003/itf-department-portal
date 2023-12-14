@@ -1,15 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="model.bean.Post" %>
-<%@ page import="java.util.List" %>
-
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <link rel="icon" href="media/asset/logo.ico">
 
     <title>ITF-Department-Portal</title>
@@ -20,13 +16,12 @@
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
     <link href="list-post.css" rel="stylesheet">
-</head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">
+    <link href="login.css" rel="stylesheet">
 
+</head>
 <body>
-<%
-    List<Post> listPost = (List<Post>) request.getAttribute("listPost");
-    Post post = (Post) request.getAttribute("post");
-%>
 <div class="container">
     <header class="blog-header py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
@@ -52,7 +47,7 @@
                     </div>
                 </div>
                 <span style="width: 10px;"></span> <!-- Khoảng cách giữa Search field và Sign In -->
-                <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign In</a>
+                <a class="btn btn-sm btn-outline-secondary" href="#">Sign In</a>
                 <span style="width: 10px;"></span> <!-- Khoảng cách giữa Sign In và Sign Up -->
                 <a class="btn btn-sm btn-outline-secondary" href="#">Sign Up</a>
             </div>
@@ -69,79 +64,59 @@
                 <a class="p-2 text-muted" href="PostManagementServlet?action=viewCuuSinhVien">CỰU SINH VIÊN</a>
             </nav>
         </div>
-        <hr class="border-bottom">
     </header>
 
-
-    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
-        <div class="row">
-            <div class="col-md-6">
-                <!-- Hình ở đây -->
-                <img src="<%=post.getImage()%>" alt="Description of the image" class="img-fluid rounded">
+</div>
+<% if (request.getAttribute("errorMessage") != null) { %>
+<div class="alert alert-danger" role="alert">
+    <%= request.getAttribute("errorMessage") %>
+</div>
+<% } %>
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     class="img-fluid" alt="Sample image">
             </div>
-            <div class="col-md-6">
-                <!-- Nội dung văn bản ở đây -->
-                <h1 class="display-4 font-italic"><%= post.getTitle()%></h1>
-                <p class="blog-post-meta"><%=post.getNumViews()%> Lượt xem
-                <p class="blog-post-meta"><%=post.getDate()%> by <a href="#"><%=post.getAuthor()%></a></p>
-                <p class="lead my-3"><%=post.getExcerpt()%></p>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1" >
+                <form action="AuthenticationManagementServlet?action=login" method="POST">
+
+                    <div class="d-flex flex-row mb-4">
+                        <i class="fas fa-user fa-lg me-2 fa-fw" style="padding:18px 30px 2.5px 2.5px"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <input type="text" id="username" name="username" class="form-control form-control-lg"
+                                   placeholder="Nhập tài khoản" />
+                            <label class="form-label" for="username">Tài khoản</label>
+                        </div>
+                    </div>
+                    <!-- Password input -->
+                    <div class="d-flex flex-row mb-4">
+                        <i class="fas fa-lock fa-lg me-2 fa-fw" style="padding:18px 30px 2.5px 2.5px"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <input type="password" id="password" name="password"  class="form-control form-control-lg"
+                                   placeholder="Nhập mật khẩu" />
+                            <label class="form-label" for="password">Mật khẩu</label>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <input type="submit" id="login" value="Đăng nhập" class="btn btn-primary btn-lg"
+                               style="padding-left: 2.5rem; padding-right: 2.5rem; background-color: gray; border: 1px solid gray;">
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Bạn chưa có tài khoản? <a href="register_view.jsp"
+                                                                                          class="link-danger">Đăng ký</a></p>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
-</div>
-
-<main role="main" class="container">
-    <p><%=post.getContent()%></p>
-    <div class="row">
-        <div class="col-md-8 blog-main">
-            <h3 class="pb-3 mb-4 font-italic border-bottom">
-                Các bài viết khác bạn có thể sẽ thích
-            </h3>
-
-            <% for (int i = 0; i < Math.min(listPost.size(), 10); i++) { %>
-            <div class="blog-post">
-                <h2 class="blog-post-title"><%= listPost.get(i).getTitle() %></h2>
-                <p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
-                <p class="blog-post-meta"><%=listPost.get(i).getDate()%> by <a href="#"><%= listPost.get(i).getAuthor() %></a></p>
-
-                <p><%= listPost.get(i).getExcerpt() %></p>
-                <hr>
-                <p>Nội dung các bài viết</p>
-                <a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(i).getId() %>">Continue reading</a>
-            </div><!-- /.blog-post -->
-            <% } %>
-
-            <nav class="blog-pagination">
-                <a class="btn btn-outline-primary" href="#">Về đầu trang</a>
-            </nav>
-        </div>
-    </div><!-- /.row -->
-</main><!-- /.container -->
-
+</section>
 <footer class="blog-footer">
     <div class="mt-5">
         <p class="copyright">© 2023 Bản quyền Trường Đại học Bách khoa - Đại học Đà Nẵng</p>
     </div>
     </p>
 </footer>
-
-<!-- Bootstrap core JavaScript
-  ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="../../../../assets/js/vendor/popper.min.js"></script>
-<script src="../../../../dist/js/bootstrap.min.js"></script>
-<script src="../../../../assets/js/vendor/holder.min.js"></script>
-<script>
-    Holder.addTheme('thumb', {
-        bg: '#55595c',
-        fg: '#eceeef',
-        text: 'Thumbnail'
-    });
-</script>
 </body>
-
 </html>

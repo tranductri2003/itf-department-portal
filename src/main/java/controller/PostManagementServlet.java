@@ -6,7 +6,13 @@ import jakarta.servlet.annotation.*;
 import model.bean.Post;
 import model.bo.PostBO;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +22,16 @@ import java.util.*;
 
 import model.bean.User;
 import model.bo.UserBO;
+import model.bo.CategoryBO;
+import model.bean.Category;
 @WebServlet(name = "PostManagementServlet", value = "/PostManagementServlet")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,   // 2MB
+				 maxFileSize = 1024 * 1024 * 10,        // 10MB
+				 maxRequestSize = 1024 * 1024 * 50)    // 50MB
 public class PostManagementServlet extends HttpServlet {
     private PostBO postBO;
     private UserBO userBO;
+    private CategoryBO categoryBO;
     private User user;
 
     private static double[][] similarityMatrix = {
@@ -36,6 +48,7 @@ public class PostManagementServlet extends HttpServlet {
         super();
         postBO = new PostBO();
         userBO = new UserBO();
+        categoryBO = new CategoryBO();
 
     }
 
@@ -247,8 +260,83 @@ public class PostManagementServlet extends HttpServlet {
                     String redirectURL = "PostManagementServlet?action=viewUserPosts&userId=" + userIdToDelete;
                     response.sendRedirect(redirectURL);
                     break;
+                case "updateForm":
+                	int idToUpdate = Integer.parseInt(request.getParameter("update"));
+                	String userIdToUpdate = request.getParameter("userId");
+                    System.out.println(idToUpdate);
+                    System.out.println(userIdToUpdate);
+                    try {
+                        Post updatePost = postBO.getPost(idToUpdate);
+                        List<Category> categoryList = categoryBO.getAllCategory();
+                        request.setAttribute("post", updatePost);
+                        request.setAttribute("categoryList", categoryList);
+                        dispatcher = request.getRequestDispatcher("update_post_form.jsp");
+                        dispatcher.forward(request, response);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                	break;
+                case "update":
+                	Part filePart = request.getPart("image"); // "image" is the name of the file input field in your HTML form
+                    String fileName = extractFileName(filePart);
+                    // Define the relative path where you want to save the image
+                    String relativePath = "media/post";  // Change this to your desired relative path
+                    
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    int category = Integer.parseInt(request.getParameter("category"));
+                    String image = null;
+                    if (fileName != null && fileName != "") {
+                    	image = relativePath + "/" + fileName;
+                    	// Get the real path of the web application and concatenate the relative path
+                        ServletContext context = getServletContext();
+                        String uploadPath = context.getRealPath(relativePath);
+
+                        File uploadDir = new File(uploadPath);
+                        System.out.print(uploadPath);
+                        if (!uploadDir.exists()) {
+                            uploadDir.mkdir();
+                        }
+                        filePart.write(uploadPath + File.separator + fileName);
+                    }
+                    
+                    String title = request.getParameter("title");
+                    String excerpt = request.getParameter("excerpt");
+                    String content = request.getParameter("content");
+                    int numViews = -1;
+
+					try {
+						postBO.updatePost(id, category, title, image, excerpt, content, numViews);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}   
+					request.setAttribute("userId", request.getParameter("userId"));
+					List<Post> post = null;
+                    try {
+                        listPost = postBO.getAllPost();
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    request.setAttribute("listPost", post);
+                    String redirURL = "PostManagementServlet?action=detailPost&id=" + id;
+                    response.sendRedirect(redirURL);
+                    break;
             }
         }
+    }
+    
+    private String extractFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for (String item : items) {
+            if (item.trim().startsWith("filename")) {
+                return item.substring(item.indexOf("=") + 2, item.length() - 1);
+            }
+        }
+        return "";
     }
 
     // Các phương thức khác giữ nguyên
