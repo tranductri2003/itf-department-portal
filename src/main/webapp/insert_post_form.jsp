@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.bean.Category" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="model.bean.User" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,8 +33,8 @@
 
 <%
 	List<Category> categoryList = (List<Category>) request.getAttribute("categoryList"); 
+	User user = (User) session.getAttribute("user");
 %>
-
 
 <section class="vh-100" style="background-color: #eee;">
   <div class="container h-100">

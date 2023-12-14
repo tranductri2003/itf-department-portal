@@ -173,20 +173,20 @@ public class PostManagementServlet extends HttpServlet {
 
                     
                 case "viewUserPosts":
-                    	String userId = request.getParameter("userId");
-                        List<Post> userPosts;
-                        try {
-                            userPosts = postBO.getUserPost(userId);
-                            user = userBO.getUser(userId);
-                            System.out.println(user.getFullName());
-                        } catch (ClassNotFoundException | SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                        request.setAttribute("author", user);
-                        request.setAttribute("listUserPost", userPosts);
-                        dispatcher = request.getRequestDispatcher("user_page_view.jsp");
-                        dispatcher.forward(request, response);
-
+                	String userId = request.getParameter("userId");
+                    List<Post> userPosts;
+                    try {
+                        userPosts = postBO.getUserPost(userId);
+                        user = userBO.getUser(userId);
+                        System.out.println(user.getFullName());
+                    } catch (ClassNotFoundException | SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    request.setAttribute("author", user);
+                    request.setAttribute("listUserPost", userPosts);
+                    dispatcher = request.getRequestDispatcher("user_page_view.jsp");
+                    dispatcher.forward(request, response);
+                    break;
 
                 case "detailPost":
                     int postId = Integer.parseInt(request.getParameter("id"));
@@ -227,6 +227,8 @@ public class PostManagementServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        jakarta.servlet.http.HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         if (action!=null && !action.isEmpty()) {
             switch (action) {
                 case "search":
@@ -245,152 +247,177 @@ public class PostManagementServlet extends HttpServlet {
                     break;
 
                 case "delete":
-                    int idToDelete = Integer.parseInt(request.getParameter("delete"));
-                    String userIdToDelete = request.getParameter("userId");
-                    System.out.println(idToDelete);
-                    System.out.println(userIdToDelete);
-                    try {
-                        postBO.deletePost(idToDelete);
-                        System.out.println("Đã xóa thành công");
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    String redirectURL = "PostManagementServlet?action=viewUserPosts&userId=" + userIdToDelete;
-                    response.sendRedirect(redirectURL);
+                	if (user.getRole().equals("GV") || user.getRole().equals("AD")) {
+                		int idToDelete = Integer.parseInt(request.getParameter("delete"));
+                        String userIdToDelete = request.getParameter("userId");
+                        System.out.println(idToDelete);
+                        System.out.println(userIdToDelete);
+                        try {
+                            postBO.deletePost(idToDelete, user.getId());
+                            System.out.println("Đã xóa thành công");
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        String redirectURL = "PostManagementServlet?action=viewUserPosts&userId=" + userIdToDelete;
+                        response.sendRedirect(redirectURL);
+                	}
+                	else {
+                		goToViewHome(request, response);
+                	}
                     break;
                 case "updateForm":
-                	int idToUpdate = Integer.parseInt(request.getParameter("update"));
-                	String userIdToUpdate = request.getParameter("userId");
-                    System.out.println(idToUpdate);
-                    System.out.println(userIdToUpdate);
-                    try {
-                        Post updatePost = postBO.getPost(idToUpdate);
-                        List<Category> categoryList = categoryBO.getAllCategory();
-                        request.setAttribute("post", updatePost);
-                        request.setAttribute("categoryList", categoryList);
-                        dispatcher = request.getRequestDispatcher("update_post_form.jsp");
-                        dispatcher.forward(request, response);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                	if (user.getRole().equals("GV") || user.getRole().equals("AD")) {
+                		int idToUpdate = Integer.parseInt(request.getParameter("update"));
+                    	String userIdToUpdate = request.getParameter("userId");
+                        System.out.println(idToUpdate);
+                        System.out.println(userIdToUpdate);
+                        try {
+                            Post updatePost = postBO.getPost(idToUpdate);
+                            List<Category> categoryList = categoryBO.getAllCategory();
+                            request.setAttribute("post", updatePost);
+                            request.setAttribute("categoryList", categoryList);
+                            dispatcher = request.getRequestDispatcher("update_post_form.jsp");
+                            dispatcher.forward(request, response);
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                	}
+                	else {
+                		goToViewHome(request, response);
+                	}
                 	break;
                 case "update":
-                	Part filePart = request.getPart("image"); // "image" is the name of the file input field in your HTML form
-                    String fileName = extractFileName(filePart);
-                    // Define the relative path where you want to save the image
-                    String relativePath = "media/post";  // Change this to your desired relative path
-                    
-                    int id = Integer.parseInt(request.getParameter("id"));
-                    int category = Integer.parseInt(request.getParameter("category"));
-                    String image = null;
-                    if (fileName != null && fileName != "") {
-                    	image = relativePath + "/" + fileName;
-                    	// Get the real path of the web application and concatenate the relative path
-                        ServletContext context = getServletContext();
-                        String uploadPath = context.getRealPath(relativePath);
+                	if (user.getRole().equals("GV") || user.getRole().equals("AD")) {
+                		Part filePart = request.getPart("image"); // "image" is the name of the file input field in your HTML form
+                        String fileName = extractFileName(filePart);
+                        // Define the relative path where you want to save the image
+                        String relativePath = "media/post";  // Change this to your desired relative path
+                        
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        int category = Integer.parseInt(request.getParameter("category"));
+                        String image = null;
+                        if (fileName != null && fileName != "") {
+                        	image = relativePath + "/" + fileName;
+                        	// Get the real path of the web application and concatenate the relative path
+                            ServletContext context = getServletContext();
+                            String uploadPath = context.getRealPath(relativePath);
 
-                        File uploadDir = new File(uploadPath);
-                        System.out.print(uploadPath);
-                        if (!uploadDir.exists()) {
-                            uploadDir.mkdir();
+                            File uploadDir = new File(uploadPath);
+                            System.out.print(uploadPath);
+                            if (!uploadDir.exists()) {
+                                uploadDir.mkdir();
+                            }
+                            filePart.write(uploadPath + File.separator + fileName);
                         }
-                        filePart.write(uploadPath + File.separator + fileName);
-                    }
-                    
-                    String title = request.getParameter("title");
-                    String excerpt = request.getParameter("excerpt");
-                    String content = request.getParameter("content");
-                    int numViews = -1;
+                        
+                        String title = request.getParameter("title");
+                        String excerpt = request.getParameter("excerpt");
+                        String content = request.getParameter("content");
+                        int numViews = -1;
 
-					try {
-						postBO.updatePost(id, category, title, image, excerpt, content, numViews);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}   
-					request.setAttribute("userId", request.getParameter("userId"));
-					List<Post> post = null;
-                    try {
-                        listPost = postBO.getAllPost();
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    request.setAttribute("listPost", post);
-                    String redirURL = "PostManagementServlet?action=detailPost&id=" + id;
-                    response.sendRedirect(redirURL);
+    					try {
+    						postBO.updatePost(id, category, title, image, excerpt, content, numViews);
+    					} catch (Exception e) {
+    						e.printStackTrace();
+    					}   
+    					request.setAttribute("userId", request.getParameter("userId"));
+    					List<Post> post = null;
+                        try {
+                            listPost = postBO.getAllPost();
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        request.setAttribute("listPost", post);
+                        String redirURL = "PostManagementServlet?action=detailPost&id=" + id;
+                        response.sendRedirect(redirURL);
+                	}
+                	else {
+                		goToViewHome(request, response);
+                	}
                     break;
                 case "insertForm":
-                	String userIdToInsert= request.getParameter("userId");
-                    System.out.println(userIdToInsert);
-                    try {
-                        List<Category> categoryList = categoryBO.getAllCategory();
-                        request.setAttribute("categoryList", categoryList);
-                        dispatcher = request.getRequestDispatcher("insert_post_form.jsp");
-                        dispatcher.forward(request, response);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                	if (user.getRole().equals("GV") || user.getRole().equals("AD")) {
+                		String userIdToInsert= request.getParameter("userId");
+                        System.out.println(userIdToInsert);
+                        try {
+                            List<Category> categoryList = categoryBO.getAllCategory();
+                            request.setAttribute("categoryList", categoryList);
+                            dispatcher = request.getRequestDispatcher("insert_post_form.jsp");
+                            dispatcher.forward(request, response);
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                	}
+                	else {
+                		goToViewHome(request, response);
+                	}
                 	break;
                 case "insert":
-                	Part fPart = request.getPart("image"); // "image" is the name of the file input field in your HTML form
-                    String fName = extractFileName(fPart);
-                    // Define the relative path where you want to save the image
-                    String relPath = "media/post";  // Change this to your desired relative path
-                    
-                    int categoryInsert = Integer.parseInt(request.getParameter("category"));
-                    String imageInsert = null;
-                    if (fName != null && fName != "") {
-                    	imageInsert = relPath + "/" + fName;
-                    	System.out.println(imageInsert);
-                    	// Get the real path of the web application and concatenate the relative path
-                        ServletContext context = getServletContext();
-                        String uploadPath = context.getRealPath(relPath);
+                    if (user.getRole().equals("GV") || user.getRole().equals("AD")) {
+                    	Part fPart = request.getPart("image"); // "image" is the name of the file input field in your HTML form
+                        String fName = extractFileName(fPart);
+                        // Define the relative path where you want to save the image
+                        String relPath = "media/post";  // Change this to your desired relative path
+                        
+                        int categoryInsert = Integer.parseInt(request.getParameter("category"));
+                        String imageInsert = null;
+                        if (fName != null && fName != "") {
+                        	imageInsert = relPath + "/" + fName;
+                        	System.out.println(imageInsert);
+                        	// Get the real path of the web application and concatenate the relative path
+                            ServletContext context = getServletContext();
+                            String uploadPath = context.getRealPath(relPath);
 
-                        File uploadDir = new File(uploadPath);
-                        System.out.print(uploadPath);
-                        if (!uploadDir.exists()) {
-                            uploadDir.mkdir();
+                            File uploadDir = new File(uploadPath);
+                            System.out.print(uploadPath);
+                            if (!uploadDir.exists()) {
+                                uploadDir.mkdir();
+                            }
+                            fPart.write(uploadPath + File.separator + fName);
                         }
-                        fPart.write(uploadPath + File.separator + fName);
-                    }
-                    
-                    String titleInsert = request.getParameter("title");
-                    String excerptInsert = request.getParameter("excerpt");
-                    String contentInsert = request.getParameter("content");
-                    int numViewsInsert = 0;
-                    
-                    jakarta.servlet.http.HttpSession session = request.getSession();
+                        
+                        String titleInsert = request.getParameter("title");
+                        String excerptInsert = request.getParameter("excerpt");
+                        String contentInsert = request.getParameter("content");
+                        int numViewsInsert = 0;
+                        
+                        String author = user.getId();
 
-                    User user = (User) session.getAttribute("user");
-                    String author = user.getId();
-
-					try {
-						postBO.insertPost(categoryInsert, titleInsert, imageInsert, excerptInsert, contentInsert, author, numViewsInsert);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}   
-					request.setAttribute("userId", request.getParameter("userId"));
-					List<Post> posts = null;
-                    try {
-                        listPost = postBO.getAllPost();
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+    					try {
+    						postBO.insertPost(categoryInsert, titleInsert, imageInsert, excerptInsert, contentInsert, author, numViewsInsert);
+    					} catch (Exception e) {
+    						e.printStackTrace();
+    					}   
+    					request.setAttribute("userId", request.getParameter("userId"));
                     }
-                    request.setAttribute("listPost", posts);
-                    String redireURL = "PostManagementServlet?action=viewHome";
-                    response.sendRedirect(redireURL);
+                    goToViewHome(request, response);
                     break;
             }
         }
+    }
+    
+    private void goToViewHome(HttpServletRequest request, HttpServletResponse response) {
+    	List<Post> posts = null;
+        try {
+        	posts = postBO.getAllPost();
+        	request.setAttribute("listPost", posts);
+            String redireURL = "PostManagementServlet?action=viewHome";
+            response.sendRedirect(redireURL);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
     private String extractFileName(Part part) {

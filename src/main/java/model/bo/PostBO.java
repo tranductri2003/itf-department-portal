@@ -38,8 +38,8 @@ public class PostBO {
 		return this.postDAO.updatePost(id, category, title, image, excerpt, content, numViews);
 	}
 	
-	public boolean deletePost(int id) throws ClassNotFoundException, SQLException {
-		return this.postDAO.deletePost(id);
+	public boolean deletePost(int id, String userId) throws ClassNotFoundException, SQLException {
+		return this.postDAO.deletePost(id, userId);
 	}
 	
 	public List<Post> searchPost(String searchString) throws ClassNotFoundException, SQLException {

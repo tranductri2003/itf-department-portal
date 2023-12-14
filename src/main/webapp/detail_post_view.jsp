@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="model.bean.Post" %>
 <%@ page import="java.util.List" %>
-
+<%@ page import="model.bean.User" %>
 <!doctype html>
 <html lang="en">
 
@@ -51,10 +51,18 @@
                         </a>
                     </div>
                 </div>
-                <span style="width: 10px;"></span> <!-- Khoảng cách giữa Search field và Sign In -->
-                <a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign In</a>
-                <span style="width: 10px;"></span> <!-- Khoảng cách giữa Sign In và Sign Up -->
-                <a class="btn btn-sm btn-outline-secondary" href="#">Sign Up</a>
+                <%
+              		User user = (User) session.getAttribute("user");
+                	if (user != null) { 
+                %>
+				<a class="btn btn-sm btn-outline-secondary" href="PostManagementServlet?action=viewUserPosts&userId=<%= user.getId() %>"> <%= user.getFullName() %> </a>
+				<span style="width: 10px;"></span>
+				<a class="btn btn-sm btn-outline-secondary" href="AuthenticationManagementServlet?action=logout" method="POST">Sign Out</a>
+				<% } else { %>
+				<a class="btn btn-sm btn-outline-secondary" href="login_view.jsp">Sign In</a>
+				<span style="width: 10px;"></span>
+				<a class="btn btn-sm btn-outline-secondary" href="register_view.jsp">Sign Up</a>
+				<% } %>
             </div>
         </div>
         <div class="nav-scroller py-1 mb-2">

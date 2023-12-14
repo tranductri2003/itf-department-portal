@@ -107,9 +107,12 @@ public class PostDAO {
 	
 		String sql = "UPDATE post SET category = ?, title = ?, image = ?, excerpt = ?, content = ?, num_views = ? WHERE id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		
+		Post post = this.getPost(id);
 		if (image == null || image == "") {
-			image = this.getPost(id).getImage();
+			image = post.getImage();
+		}
+		if (numViews == -1) {
+			numViews = post.getNumViews();
 		}
 		
 		stmt.setInt(1, category);
@@ -127,12 +130,13 @@ public class PostDAO {
         return affectedRows > 0;
 	}
 	
-	public boolean deletePost(int id) throws ClassNotFoundException, SQLException {
+	public boolean deletePost(int id, String userId) throws ClassNotFoundException, SQLException {
 		Connection conn = Connector.getConnection();
 		
-		String sql = "DELETE FROM post WHERE id = ?";
+		String sql = "DELETE FROM post WHERE id = ? AND author = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, id);
+		stmt.setString(2, userId);
 		
 		int affectedRows = stmt.executeUpdate();
 		
