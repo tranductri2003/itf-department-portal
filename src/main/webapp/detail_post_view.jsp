@@ -85,7 +85,7 @@
         <div class="row">
             <div class="col-md-6">
                 <!-- Hình ở đây -->
-                <img src="<%=post.getImage()%>" alt="Description of the image" class="img-fluid rounded">
+                <img src="<%=( post.getImage()==null || post.getImage().equals("")) ? Post.DEFAULT_POST:post.getImage()%>" alt="Description of the image" class="img-fluid rounded">
             </div>
             <div class="col-md-6">
                 <!-- Nội dung văn bản ở đây -->

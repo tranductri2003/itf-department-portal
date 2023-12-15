@@ -55,6 +55,7 @@ public class AccountDAO {
 
             int affectedRows = stmt.executeUpdate();
 
+            System.out.println(username + password);
             Connector.closeConnection(conn, stmt);
             return affectedRows > 0;
         }
@@ -67,6 +68,7 @@ public class AccountDAO {
         PreparedStatement stmt = conn.prepareStatement(sql);
 
         stmt.setString(1, password);
+        stmt.setString(2, username);
 
         int affectedRows = stmt.executeUpdate();
 

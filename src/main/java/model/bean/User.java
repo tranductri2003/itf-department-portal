@@ -13,8 +13,9 @@ public class User {
     private String avatar;
     private String about;
 
+    public static final String DEFAULT_AVATAR = "media/user/default.jpg";
     // Constructor
-    public User(String id, String fullName, String phoneNumber, String email, String role, String address) {
+    public User(String id, String fullName, String phoneNumber, String email, String role, String address, String avatar, String about) {
         this.id = id;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;

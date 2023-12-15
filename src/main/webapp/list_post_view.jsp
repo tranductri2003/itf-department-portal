@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="model.bean.User" %>
+<%@ page import="jakarta.ws.rs.POST" %>
 
 <!doctype html>
 <html lang="en">
@@ -91,7 +92,7 @@
             <div class="col-md-6">
                 <!-- Hình ở đây -->
                 <% if (!listPost.isEmpty()) { %>
-                <img src="<%= listPost.get(0).getImage() %>" alt="Description of the image" class="img-fluid rounded">
+                <img src="<%= (listPost.get(0).getImage()==null || listPost.get(0).getImage().equals("")) ? Post.DEFAULT_POST:listPost.get(0).getImage() %>" alt="Description of the image" class="img-fluid rounded">
                 <% } %>
             </div>
             <div class="col-md-6">
@@ -135,7 +136,7 @@
                         <p class="card-text mb-auto"><%= excerpt %></p>
                         <a href="PostManagementServlet?action=detailPost&id=<%= listPost.get(i).getId() %>">Continue reading</a>
                     </div>
-                    <img class="card-img-right flex-auto d-none d-md-block" src="<%= listPost.get(i).getImage() %>" alt="Description of the image" width="250" height="200">
+                    <img class="card-img-right flex-auto d-none d-md-block" src="<%= (listPost.get(i).getImage()==null || listPost.get(i).getImage().equals("") ) ? Post.DEFAULT_POST:listPost.get(i).getImage() %>" alt="Description of the image" width="250" height="200">
                 </div>
             </div>
             <% } %>

@@ -14,6 +14,7 @@ public class Post {
     private String author;
     private Date date;
     private int numViews;
+    public static final String DEFAULT_POST = "media/post/default.jpg";
 
     // Constructor
     public Post(int id, int category, String title, String image, String excerpt, String content, String author, Date date, int numViews) {

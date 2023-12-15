@@ -116,7 +116,7 @@
 								<% 
 									String img = userProfile.getAvatar(); 
 									if (img == null || img.equals("")) {
-										img = "https://bootdey.com/img/Content/avatar/avatar7.png";
+										img = User.DEFAULT_AVATAR;
 									}
 								%>
 								<img src="<%=img %>" alt="Maxwell Admin">
