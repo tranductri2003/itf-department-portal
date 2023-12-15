@@ -65,7 +65,7 @@ public class UserDAO {
     public boolean insertUser(String id, String fullName, String phoneNumber, String email, String role, String address) throws ClassNotFoundException, SQLException {
         Connection conn = Connector.getConnection();
 
-        String sql = "INSERT INTO user (id, full_name, phone_number, email, role, address) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user (id, full_name, phone_number, email, role, address, avatar, about) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
 
         stmt.setString(1, id);
@@ -74,6 +74,9 @@ public class UserDAO {
         stmt.setString(4, email);
         stmt.setString(5, role);
         stmt.setString(6, address);
+        stmt.setString(7, User.DEFAULT_AVATAR);
+        stmt.setString(8, "");
+
 
         int affectedRows = stmt.executeUpdate();
 
