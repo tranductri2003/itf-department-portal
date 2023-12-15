@@ -115,7 +115,7 @@
 							<div class="user-avatar">
 								<% 
 									String img = userProfile.getAvatar(); 
-									if (img == null || img == "") {
+									if (img == null || img.equals("")) {
 										img = "https://bootdey.com/img/Content/avatar/avatar7.png";
 									}
 								%>
@@ -142,8 +142,11 @@
 		</div>
 		<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 			<%
-				boolean isEditable = (user != null && userProfile != null && user.getId().equals(userProfile.getId())) || user.getRole().equals("AD") ;
+				boolean isEditable = false; // Default value for cases where user is not logged in
 
+				if (user != null && userProfile != null) {
+					isEditable = user.getId().equals(userProfile.getId()) || user.getRole().equals("AD");
+				}
 			%>
 			<div class="card h-100">
 				<div class="card-body">
@@ -199,21 +202,22 @@
 									if (sessionUser != null && (
 											sessionUser.getId().equals(author.getId()) || // Kiểm tra ID giống nhau
 													sessionUser.getRole().equals("AD") // Kiểm tra role là 'AD'
-									)) {                                        // Hiển thị các nút button nếu ID của người dùng trong session và author giống nhau
+									)) {
+										// Hiển thị các nút button nếu ID của người dùng trong session và author giống nhau
 								%>
 								<div class="text-right">
 									<button type="button" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
 									<button type="submit" id="update" name="update" class="btn btn-primary" >Update</button>
 								</div>
+								</form>
+								<form action="PostManagementServlet?action=insertForm" method="post">
+									<button type="submit" id="ỉnsert" name="ỉnsert" class="btn btn-primary" >Tạo bài đăng mới</button>
+								</form>
 								<%
 									}
 								%>
 							</div>
 						</div>
-					</form>
-					<form action="PostManagementServlet?action=insertForm" method="post">
-					<button type="submit" id="ỉnsert" name="ỉnsert" class="btn btn-primary" >Tạo bài đăng mới</button>
-					</form>
 				</div>
 			</div>
 		</div>
@@ -234,7 +238,7 @@
 				Các bài viết khác của tác giả
 			</h3>
 
-			<% for (int i = 3; i < listPost.size(); i++) { %>
+			<% for (int i = 0; i < listPost.size(); i++) { %>
 			<div class="blog-post">
 				<h2 class="blog-post-title"><%= listPost.get(i).getTitle() %></h2>
 				<p class="blog-post-meta"><%=listPost.get(i).getNumViews()%> Lượt xem
