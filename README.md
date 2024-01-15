@@ -24,7 +24,7 @@ The ITF Department Portal is a dynamic, Java-based web application developed usi
 ### Homepage
 ![image](https://github.com/tranductri2003/ITF-Department-Portal/assets/97786211/baa705e9-68db-42f4-8aee-c0b96201411c)
 ![image](https://github.com/tranductri2003/ITF-Department-Portal/assets/97786211/4659128d-7ed1-4e44-a6e3-5ad44c8d97a6)
-###Post Detail
+### Post Detail
 ![image](https://github.com/tranductri2003/ITF-Department-Portal/assets/97786211/cade4878-b743-4e50-af26-be81eda27ae6)
 ![image](https://github.com/tranductri2003/ITF-Department-Portal/assets/97786211/b5966c94-641c-4f6c-9b4c-7d0dcc82e6c3)
 ![image](https://github.com/tranductri2003/ITF-Department-Portal/assets/97786211/fb59e7fd-85f5-4523-a875-96ba361688d5)
